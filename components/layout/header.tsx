@@ -57,15 +57,12 @@ export function Header({ initialStore }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-steel/70 bg-void/95 backdrop-blur-xl">
-      {/* TOP ORANGE LINE */}
       <div className="h-[2px] w-full bg-salt-orange" />
 
       <div className="mx-auto max-w-[1600px] px-6">
         <div className="flex h-[74px] items-center justify-between gap-6">
 
-          {/* ===================================================== */}
-          {/* LOGO / BRAND */}
-          {/* ===================================================== */}
+          {/* LOGO */}
 
           <Link
             href="/"
@@ -98,23 +95,39 @@ export function Header({ initialStore }: HeaderProps) {
             </div>
           </Link>
 
-          {/* ===================================================== */}
-          {/* DESKTOP NAVIGATION */}
-          {/* ===================================================== */}
+          {/* DESKTOP NAV */}
 
           <nav className="hidden items-center gap-1 md:flex">
 
-            <NavItem
+            <Link
               href="/"
-              label="Home"
-              active={isActive('/')}
-            />
+              className={`relative rounded-md px-4 py-2 text-xs font-black uppercase tracking-[0.12em] transition-all ${
+                isActive('/')
+                  ? 'bg-salt-orange/10 text-salt-orange-bright'
+                  : 'text-neutral-400 hover:bg-white/[0.025] hover:text-white'
+              }`}
+            >
+              Home
 
-            <NavItem
+              {isActive('/') ? (
+                <span className="absolute inset-x-4 -bottom-[17px] h-[2px] bg-salt-orange" />
+              ) : null}
+            </Link>
+
+            <Link
               href="/shop"
-              label="Shop"
-              active={isActive('/shop') || isActive('/product')}
-            />
+              className={`relative rounded-md px-4 py-2 text-xs font-black uppercase tracking-[0.12em] transition-all ${
+                isActive('/shop') || isActive('/product')
+                  ? 'bg-salt-orange/10 text-salt-orange-bright'
+                  : 'text-neutral-400 hover:bg-white/[0.025] hover:text-white'
+              }`}
+            >
+              Shop
+
+              {isActive('/shop') || isActive('/product') ? (
+                <span className="absolute inset-x-4 -bottom-[17px] h-[2px] bg-salt-orange" />
+              ) : null}
+            </Link>
 
             {store?.menu_links?.map((menuLink, index) => (
               <a
@@ -127,8 +140,6 @@ export function Header({ initialStore }: HeaderProps) {
                 {menuLink.title}
               </a>
             ))}
-
-            {/* CART */}
 
             <Link
               href="/cart"
@@ -165,9 +176,7 @@ export function Header({ initialStore }: HeaderProps) {
             </Link>
           </nav>
 
-          {/* ===================================================== */}
           {/* MOBILE BUTTON */}
-          {/* ===================================================== */}
 
           <button
             type="button"
@@ -183,9 +192,7 @@ export function Header({ initialStore }: HeaderProps) {
           </button>
         </div>
 
-        {/* ======================================================= */}
-        {/* MOBILE NAVIGATION */}
-        {/* ======================================================= */}
+        {/* MOBILE NAV */}
 
         <AnimatePresence>
           {mobileMenuOpen ? (
@@ -206,19 +213,29 @@ export function Header({ initialStore }: HeaderProps) {
             >
               <div className="space-y-2 py-4">
 
-                <MobileNavItem
+                <Link
                   href="/"
-                  label="Home"
-                  active={isActive('/')}
                   onClick={() => setMobileMenuOpen(false)}
-                />
+                  className={`block rounded-md border px-4 py-3 text-xs font-black uppercase tracking-wider transition-all ${
+                    isActive('/')
+                      ? 'border-salt-orange/40 bg-salt-orange/10 text-salt-orange-bright'
+                      : 'border-transparent text-neutral-400 hover:border-steel-light hover:bg-charcoal hover:text-white'
+                  }`}
+                >
+                  Home
+                </Link>
 
-                <MobileNavItem
+                <Link
                   href="/shop"
-                  label="Shop"
-                  active={isActive('/shop') || isActive('/product')}
                   onClick={() => setMobileMenuOpen(false)}
-                />
+                  className={`block rounded-md border px-4 py-3 text-xs font-black uppercase tracking-wider transition-all ${
+                    isActive('/shop') || isActive('/product')
+                      ? 'border-salt-orange/40 bg-salt-orange/10 text-salt-orange-bright'
+                      : 'border-transparent text-neutral-400 hover:border-steel-light hover:bg-charcoal hover:text-white'
+                  }`}
+                >
+                  Shop
+                </Link>
 
                 {store?.menu_links?.map((menuLink, index) => (
                   <a
@@ -268,61 +285,7 @@ export function Header({ initialStore }: HeaderProps) {
             </motion.nav>
           ) : null}
         </AnimatePresence>
-
       </div>
     </header>
-  );
-}
-
-function NavItem({
-  href,
-  label,
-  active,
-}: {
-  href: string;
-  label: string;
-  active: boolean;
-}) {
-  return (
-    <Link
-      href={href}
-      className={`relative rounded-md px-4 py-2 text-xs font-black uppercase tracking-[0.12em] transition-all ${
-        active
-          ? 'bg-salt-orange/10 text-salt-orange-bright'
-          : 'text-neutral-400 hover:bg-white/[0.025] hover:text-white'
-      }`}
-    >
-      {label}
-
-      {active ? (
-        <span className="absolute inset-x-4 -bottom-[17px] h-[2px] bg-salt-orange" />
-      ) : null}
-    </Link>
-  );
-}
-
-function MobileNavItem({
-  href,
-  label,
-  active,
-  onClick,
-}: {
-  href: string;
-  label: string;
-  active: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className={`block rounded-md border px-4 py-3 text-xs font-black uppercase tracking-wider transition-all ${
-        active
-          ? 'border-salt-orange/40 bg-salt-orange/10 text-salt-orange-bright'
-          : 'border-transparent text-neutral-400 hover:border-steel-light hover:bg-charcoal hover:text-white'
-      }`}
-    >
-      {label}
-    </Link>
   );
 }
