@@ -65,17 +65,27 @@ export function Footer({ initialStore }: FooterProps) {
             </p>
 
             <div className="mt-4 grid grid-cols-2 gap-x-10 gap-y-3">
-              <FooterLink href="/">
+
+              <Link
+                href="/"
+                className="text-xs font-bold uppercase tracking-wider text-neutral-500 transition-colors hover:text-salt-orange-bright"
+              >
                 Home
-              </FooterLink>
+              </Link>
 
-              <FooterLink href="/shop">
+              <Link
+                href="/shop"
+                className="text-xs font-bold uppercase tracking-wider text-neutral-500 transition-colors hover:text-salt-orange-bright"
+              >
                 Shop
-              </FooterLink>
+              </Link>
 
-              <FooterLink href="/cart">
+              <Link
+                href="/cart"
+                className="text-xs font-bold uppercase tracking-wider text-neutral-500 transition-colors hover:text-salt-orange-bright"
+              >
                 Cart
-              </FooterLink>
+              </Link>
 
               {store?.menu_links?.map((menuLink, index) => (
                 <a
@@ -96,7 +106,6 @@ export function Footer({ initialStore }: FooterProps) {
 
         {store?.social_medias ? (
           <div className="mt-10 border-t border-steel/60 pt-7">
-
             <div className="flex flex-wrap items-center justify-between gap-5">
 
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">
@@ -197,23 +206,6 @@ export function Footer({ initialStore }: FooterProps) {
         </div>
       </div>
     </footer>
-  );
-}
-
-function FooterLink({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      className="text-xs font-bold uppercase tracking-wider text-neutral-500 transition-colors hover:text-salt-orange-bright"
-    >
-      {children}
-    </Link>
   );
 }
 
