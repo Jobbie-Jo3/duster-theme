@@ -1,6 +1,6 @@
 'use client';
 
-import { XCircle } from 'lucide-react';
+import { XCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
@@ -14,43 +14,76 @@ export default function CheckoutCanceledPage() {
   }, [clearCart]);
 
   return (
-    <div className="min-h-screen py-12 flex items-center justify-center">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-2xl mx-auto text-center"
-        >
-          <div className="w-24 h-24 rounded-full bg-red-500/20 border-4 border-red-500 flex items-center justify-center mx-auto mb-6">
-            <XCircle className="w-12 h-12 text-red-500" />
+    <div className="flex min-h-screen items-center justify-center px-6 py-16">
+
+      <motion.div
+        initial={{
+          opacity: 0,
+          scale: 0.96,
+          y: 14,
+        }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+          y: 0,
+        }}
+        transition={{
+          duration: 0.35,
+        }}
+        className="texture-plate w-full max-w-2xl overflow-hidden rounded-md border border-steel bg-charcoal"
+      >
+
+        {/* TOP ACCENT */}
+
+        <div className="h-[2px] w-full bg-red-500/80" />
+
+        <div className="p-8 text-center sm:p-12">
+
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-md border border-red-500/40 bg-red-500/10 text-red-400">
+            <XCircle className="h-8 w-8" />
           </div>
 
-          <h1 className="text-4xl font-bold mb-4">Payment Canceled</h1>
-          <p className="text-xl text-muted mb-8">
-            Your payment was canceled. No charges were made to your account.
+          <p className="mt-6 font-display text-xs font-bold uppercase tracking-[0.25em] text-salt-orange-bright">
+            #SALT Webshop
           </p>
 
-          <div className="p-6 rounded-xl bg-card border border-border mb-8">
-            <p className="text-sm text-muted">
-              If you encountered any issues during checkout, please try again or contact support for assistance.
+          <h1 className="mt-2 font-display text-3xl font-bold uppercase tracking-tight text-white sm:text-4xl">
+            Payment Canceled
+          </h1>
+
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-neutral-400">
+            Your payment was canceled and no charges were made.
+          </p>
+
+          <div className="mt-8 rounded-md border border-steel bg-void/60 p-5">
+
+            <p className="text-sm leading-relaxed text-neutral-500">
+              If you ran into an issue during checkout, you can try again or contact #SALT support for help.
             </p>
+
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/cart">
-              <button className="px-8 py-3 rounded-xl bg-primary hover:bg-primary/90 text-background font-semibold transition-all glow-primary cursor-pointer">
-                Return to Cart
-              </button>
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+
+            <Link
+              href="/cart"
+              className="salt-button min-w-[170px]"
+            >
+              Return To Cart
+              <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link href="/shop">
-              <button className="px-8 py-3 rounded-xl bg-card border border-border hover:border-primary text-foreground font-semibold transition-all cursor-pointer">
-                Continue Shopping
-              </button>
+
+            <Link
+              href="/shop"
+              className="salt-button-outline min-w-[170px]"
+            >
+              Continue Shopping
             </Link>
+
           </div>
-        </motion.div>
-      </div>
+
+        </div>
+      </motion.div>
     </div>
   );
 }

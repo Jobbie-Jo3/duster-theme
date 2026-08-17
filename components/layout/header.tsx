@@ -1,13 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingCart, Menu, X } from 'lucide-react';
+import Image from 'next/image';
+import { Menu, X, ShoppingCart } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+
 import { useStore } from '@/hooks/use-api';
 import { useCart } from '@/hooks/use-cart';
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
 import type { Store } from '@/lib/schemas';
 
 interface HeaderProps {
@@ -17,13 +18,14 @@ interface HeaderProps {
 export function Header({ initialStore }: HeaderProps) {
   const { data: fetchedStore } = useStore();
   const store = fetchedStore || initialStore;
+
   const cart = useCart();
   const pathname = usePathname();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [prevCount, setPrevCount] = useState(0);
-  const [animate, setAnimate] = useState(false);
+  const [animateCart, setAnimateCart] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -33,15 +35,15 @@ export function Header({ initialStore }: HeaderProps) {
 
   useEffect(() => {
     if (mounted && cartItemCount > prevCount) {
-      setAnimate(true);
+      setAnimateCart(true);
 
-      const timeout = setTimeout(() => {
-        setAnimate(false);
+      const timer = setTimeout(() => {
+        setAnimateCart(false);
       }, 600);
 
       setPrevCount(cartItemCount);
 
-      return () => clearTimeout(timeout);
+      return () => clearTimeout(timer);
     }
 
     setPrevCount(cartItemCount);
@@ -57,19 +59,20 @@ export function Header({ initialStore }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-steel/70 bg-void/95 backdrop-blur-xl">
+      {/* TOP ACCENT */}
       <div className="h-[2px] w-full bg-salt-orange" />
 
       <div className="mx-auto max-w-[1600px] px-6">
-        <div className="flex h-[74px] items-center justify-between gap-6">
+        <div className="flex h-[58px] items-center justify-between gap-6">
 
-          {/* LOGO */}
+          {/* BRAND */}
 
           <Link
             href="/"
-            className="group flex min-w-0 items-center gap-3"
+            className="group flex min-w-0 items-center gap-2.5"
           >
             {store?.logo ? (
-              <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-md border border-salt-orange/30 bg-charcoal transition-all duration-200 group-hover:border-salt-orange/70">
+              <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-sm border border-salt-orange/30 bg-charcoal">
                 <Image
                   src={store.logo}
                   alt={store.title || '#SALT'}
@@ -79,54 +82,46 @@ export function Header({ initialStore }: HeaderProps) {
                 />
               </div>
             ) : (
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-salt-orange/40 bg-salt-orange/10 font-black text-salt-orange-bright">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm border border-salt-orange/30 bg-salt-orange/10 font-display text-lg font-black text-salt-orange-bright">
                 #
               </div>
             )}
 
-            <div className="min-w-0">
-              <p className="text-[9px] font-black uppercase tracking-[0.28em] text-salt-orange-bright">
-                Official Webshop
-              </p>
+            <div className="flex items-baseline gap-1.5">
+              <span className="font-display text-lg font-black uppercase tracking-wide text-salt-orange-bright">
+                #SALT
+              </span>
 
-              <p className="truncate font-black uppercase tracking-wide text-white sm:text-lg">
-                #SALT NO-WIPE
-              </p>
+              <span className="font-display text-lg font-black uppercase tracking-wide text-white">
+                NO-WIPE
+              </span>
             </div>
           </Link>
 
           {/* DESKTOP NAV */}
 
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center gap-1 lg:flex">
 
             <Link
               href="/"
-              className={`relative rounded-md px-4 py-2 text-xs font-black uppercase tracking-[0.12em] transition-all ${
+              className={`rounded-sm px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wider transition-colors ${
                 isActive('/')
-                  ? 'bg-salt-orange/10 text-salt-orange-bright'
-                  : 'text-neutral-400 hover:bg-white/[0.025] hover:text-white'
+                  ? 'text-salt-orange-bright'
+                  : 'text-neutral-400 hover:text-white'
               }`}
             >
               Home
-
-              {isActive('/') ? (
-                <span className="absolute inset-x-4 -bottom-[17px] h-[2px] bg-salt-orange" />
-              ) : null}
             </Link>
 
             <Link
               href="/shop"
-              className={`relative rounded-md px-4 py-2 text-xs font-black uppercase tracking-[0.12em] transition-all ${
+              className={`rounded-sm px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wider transition-colors ${
                 isActive('/shop') || isActive('/product')
-                  ? 'bg-salt-orange/10 text-salt-orange-bright'
-                  : 'text-neutral-400 hover:bg-white/[0.025] hover:text-white'
+                  ? 'text-salt-orange-bright'
+                  : 'text-neutral-400 hover:text-white'
               }`}
             >
               Shop
-
-              {isActive('/shop') || isActive('/product') ? (
-                <span className="absolute inset-x-4 -bottom-[17px] h-[2px] bg-salt-orange" />
-              ) : null}
             </Link>
 
             {store?.menu_links?.map((menuLink, index) => (
@@ -135,24 +130,26 @@ export function Header({ initialStore }: HeaderProps) {
                 href={menuLink.link.trim()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-md px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-neutral-400 transition-all hover:bg-salt-orange/5 hover:text-white"
+                className="rounded-sm px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wider text-neutral-400 transition-colors hover:text-white"
               >
                 {menuLink.title}
               </a>
             ))}
+
+            {/* CART */}
 
             <Link
               href="/cart"
               className="relative ml-2"
             >
               <div
-                className={`flex items-center gap-2 rounded-md border px-4 py-2.5 text-xs font-black uppercase tracking-wider transition-all ${
+                className={`flex items-center gap-2 rounded-sm border px-3.5 py-2 font-display text-[11px] font-bold uppercase tracking-wider transition-all ${
                   isActive('/cart') || isActive('/checkout')
                     ? 'border-salt-orange bg-salt-orange text-black'
-                    : 'border-steel-light bg-charcoal text-neutral-300 hover:border-salt-orange/60 hover:text-white'
+                    : 'border-salt-orange/50 bg-charcoal text-salt-orange-bright hover:border-salt-orange hover:bg-salt-orange/10'
                 }`}
               >
-                <ShoppingCart className="h-4 w-4" />
+                <ShoppingCart className="h-3.5 w-3.5" />
                 Cart
               </div>
 
@@ -162,18 +159,18 @@ export function Header({ initialStore }: HeaderProps) {
                     key={cartItemCount}
                     initial={{ scale: 0 }}
                     animate={{
-                      scale: animate ? [1, 1.45, 1] : 1,
-                      rotate: animate ? [0, 10, -10, 0] : 0,
+                      scale: animateCart ? [1, 1.4, 1] : 1,
                     }}
                     exit={{ scale: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="absolute -right-2 -top-2 flex h-6 min-w-6 items-center justify-center rounded-full border-2 border-void bg-salt-orange px-1 text-[10px] font-black text-black shadow-[0_0_18px_rgba(250,73,0,0.35)]"
+                    className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-void bg-salt-orange px-1 text-[9px] font-black text-black"
                   >
                     {cartItemCount}
                   </motion.span>
                 ) : null}
               </AnimatePresence>
             </Link>
+
           </nav>
 
           {/* MOBILE BUTTON */}
@@ -181,13 +178,13 @@ export function Header({ initialStore }: HeaderProps) {
           <button
             type="button"
             onClick={() => setMobileMenuOpen((value) => !value)}
-            className="flex h-10 w-10 items-center justify-center rounded-md border border-steel-light bg-charcoal text-white transition-colors hover:border-salt-orange/60 hover:text-salt-orange-bright md:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-sm border border-steel-light bg-charcoal text-neutral-300 transition-colors hover:border-salt-orange/50 hover:text-white lg:hidden"
             aria-label="Toggle navigation"
           >
             {mobileMenuOpen ? (
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4" />
             ) : (
-              <Menu className="h-5 w-5" />
+              <Menu className="h-4 w-4" />
             )}
           </button>
         </div>
@@ -209,17 +206,17 @@ export function Header({ initialStore }: HeaderProps) {
                 opacity: 0,
                 height: 0,
               }}
-              className="overflow-hidden border-t border-steel/60 md:hidden"
+              className="overflow-hidden border-t border-steel/60 lg:hidden"
             >
-              <div className="space-y-2 py-4">
+              <div className="space-y-1 py-3">
 
                 <Link
                   href="/"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block rounded-md border px-4 py-3 text-xs font-black uppercase tracking-wider transition-all ${
+                  className={`block rounded-sm px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider ${
                     isActive('/')
-                      ? 'border-salt-orange/40 bg-salt-orange/10 text-salt-orange-bright'
-                      : 'border-transparent text-neutral-400 hover:border-steel-light hover:bg-charcoal hover:text-white'
+                      ? 'bg-salt-orange/10 text-salt-orange-bright'
+                      : 'text-neutral-400 hover:bg-charcoal hover:text-white'
                   }`}
                 >
                   Home
@@ -228,10 +225,10 @@ export function Header({ initialStore }: HeaderProps) {
                 <Link
                   href="/shop"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block rounded-md border px-4 py-3 text-xs font-black uppercase tracking-wider transition-all ${
+                  className={`block rounded-sm px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider ${
                     isActive('/shop') || isActive('/product')
-                      ? 'border-salt-orange/40 bg-salt-orange/10 text-salt-orange-bright'
-                      : 'border-transparent text-neutral-400 hover:border-steel-light hover:bg-charcoal hover:text-white'
+                      ? 'bg-salt-orange/10 text-salt-orange-bright'
+                      : 'text-neutral-400 hover:bg-charcoal hover:text-white'
                   }`}
                 >
                   Shop
@@ -243,8 +240,8 @@ export function Header({ initialStore }: HeaderProps) {
                     href={menuLink.link.trim()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block rounded-md border border-transparent px-4 py-3 text-xs font-black uppercase tracking-wider text-neutral-400 transition-colors hover:border-steel-light hover:bg-charcoal hover:text-white"
                     onClick={() => setMobileMenuOpen(false)}
+                    className="block rounded-sm px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-neutral-400 hover:bg-charcoal hover:text-white"
                   >
                     {menuLink.title}
                   </a>
@@ -253,10 +250,10 @@ export function Header({ initialStore }: HeaderProps) {
                 <Link
                   href="/cart"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between rounded-md border px-4 py-3 text-xs font-black uppercase tracking-wider transition-all ${
+                  className={`flex items-center justify-between rounded-sm border px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider ${
                     isActive('/cart') || isActive('/checkout')
                       ? 'border-salt-orange bg-salt-orange text-black'
-                      : 'border-steel-light bg-charcoal text-neutral-300'
+                      : 'border-salt-orange/40 bg-charcoal text-salt-orange-bright'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -264,21 +261,11 @@ export function Header({ initialStore }: HeaderProps) {
                     Cart
                   </div>
 
-                  <AnimatePresence>
-                    {mounted && cartItemCount > 0 ? (
-                      <motion.span
-                        key={cartItemCount}
-                        initial={{ scale: 0 }}
-                        animate={{
-                          scale: animate ? [1, 1.45, 1] : 1,
-                        }}
-                        exit={{ scale: 0 }}
-                        className="flex h-6 min-w-6 items-center justify-center rounded-full bg-salt-orange px-1 text-[10px] font-black text-black"
-                      >
-                        {cartItemCount}
-                      </motion.span>
-                    ) : null}
-                  </AnimatePresence>
+                  {mounted && cartItemCount > 0 ? (
+                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-salt-orange px-1 text-[9px] font-black text-black">
+                      {cartItemCount}
+                    </span>
+                  ) : null}
                 </Link>
 
               </div>

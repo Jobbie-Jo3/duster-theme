@@ -39,33 +39,35 @@ export function ProductCard({
     typeof product.stock === 'number' && product.stock === 0;
 
   useEffect(() => {
-    if (detailedProduct) {
-      const hasCustomFields =
-        'custom_fields' in detailedProduct &&
-        detailedProduct.custom_fields &&
-        detailedProduct.custom_fields.length > 0;
-
-      const isSubscriptionWithChoice =
-        detailedProduct.subscription &&
-        detailedProduct.onetime_sub === true;
-
-      const isDonation =
-        'donation' in detailedProduct &&
-        detailedProduct.donation === true;
-
-      const hasServerChoice =
-        'server_choice' in detailedProduct &&
-        detailedProduct.server_choice === true;
-
-      setNeedsCustomFields(
-        Boolean(
-          hasCustomFields ||
-            isSubscriptionWithChoice ||
-            isDonation ||
-            hasServerChoice
-        )
-      );
+    if (!detailedProduct) {
+      return;
     }
+
+    const hasCustomFields =
+      'custom_fields' in detailedProduct &&
+      detailedProduct.custom_fields &&
+      detailedProduct.custom_fields.length > 0;
+
+    const isSubscriptionWithChoice =
+      detailedProduct.subscription &&
+      detailedProduct.onetime_sub === true;
+
+    const isDonation =
+      'donation' in detailedProduct &&
+      detailedProduct.donation === true;
+
+    const hasServerChoice =
+      'server_choice' in detailedProduct &&
+      detailedProduct.server_choice === true;
+
+    setNeedsCustomFields(
+      Boolean(
+        hasCustomFields ||
+          isSubscriptionWithChoice ||
+          isDonation ||
+          hasServerChoice
+      )
+    );
   }, [detailedProduct]);
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -128,19 +130,19 @@ export function ProductCard({
 
   const CardContent = (
     <div
-      className={`group relative flex h-full flex-col overflow-hidden rounded-lg border bg-charcoal transition-all duration-300 ${
+      className={`texture-plate group relative flex h-full flex-col overflow-hidden rounded-md border bg-charcoal transition-all duration-200 ${
         isOutOfStock
           ? 'cursor-not-allowed border-steel opacity-60 grayscale'
-          : 'border-steel/80 hover:-translate-y-1 hover:border-salt-orange/60 hover:shadow-[0_12px_40px_rgba(0,0,0,0.35),0_0_25px_rgba(250,73,0,0.06)]'
+          : 'border-steel hover:border-salt-orange/50'
       }`}
     >
-      {/* ORANGE TOP ACCENT */}
+      {/* TOP ACCENT */}
 
       <div
-        className={`h-[2px] w-full transition-opacity ${
+        className={`h-[2px] w-full ${
           isOutOfStock
             ? 'bg-steel'
-            : 'bg-gradient-to-r from-transparent via-salt-orange to-transparent opacity-40 group-hover:opacity-100'
+            : 'bg-salt-orange/70'
         }`}
       />
 
@@ -149,7 +151,7 @@ export function ProductCard({
       <div className="absolute right-3 top-4 z-20 flex flex-col items-end gap-2">
 
         {product.featured && !hideFeaturedBadge ? (
-          <span className="flex items-center gap-1.5 rounded-md border border-salt-orange/40 bg-void/90 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider text-salt-orange-bright backdrop-blur">
+          <span className="flex items-center gap-1.5 rounded-sm border border-salt-orange/40 bg-void/90 px-2.5 py-1 font-display text-[9px] font-bold uppercase tracking-wider text-salt-orange-bright backdrop-blur">
             <Star className="h-3 w-3 fill-current" />
             Featured
           </span>
@@ -158,21 +160,21 @@ export function ProductCard({
         {product.percent_off &&
         product.percent_off > 0 &&
         product.price > 0 ? (
-          <span className="rounded-md border border-salt-orange/40 bg-salt-orange px-2.5 py-1 text-[9px] font-black uppercase tracking-wider text-black">
+          <span className="rounded-sm border border-salt-orange bg-salt-orange px-2.5 py-1 font-display text-[9px] font-bold uppercase tracking-wider text-black">
             -{product.percent_off}%
           </span>
         ) : null}
 
         {typeof product.stock === 'number' ? (
           <span
-            className={`rounded-md border px-2.5 py-1 text-[9px] font-black uppercase tracking-wider backdrop-blur ${
+            className={`rounded-sm border px-2.5 py-1 font-display text-[9px] font-bold uppercase tracking-wider ${
               product.stock === 0
                 ? 'border-red-500/40 bg-red-950/80 text-red-400'
                 : 'border-steel-light bg-void/90 text-neutral-400'
             }`}
           >
             {product.stock === 0
-              ? 'Out of Stock'
+              ? 'Out Of Stock'
               : `Stock ${product.stock}`}
           </span>
         ) : null}
@@ -181,21 +183,21 @@ export function ProductCard({
 
       {/* IMAGE */}
 
-      <div className="relative h-52 w-full overflow-hidden border-b border-steel/60 bg-void/70">
+      <div className="relative h-52 w-full overflow-hidden border-b border-steel/60 bg-void">
 
-        <div className="grid-pattern absolute inset-0 opacity-30" />
+        <div className="absolute inset-0 opacity-50 texture-plate" />
 
-        <div className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-salt-orange/5 blur-[55px] transition-all duration-300 group-hover:bg-salt-orange/10" />
+        <div className="absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full bg-salt-orange/5 blur-[70px]" />
 
         {product.image ? (
           <Image
             src={product.image}
             alt={product.name}
             fill
-            className={`relative z-10 object-contain p-4 transition-transform duration-300 ${
+            className={`relative z-10 object-contain p-5 transition-transform duration-200 ${
               isOutOfStock
                 ? ''
-                : 'group-hover:scale-[1.04]'
+                : 'group-hover:scale-[1.03]'
             }`}
             unoptimized
           />
@@ -204,6 +206,7 @@ export function ProductCard({
             <Zap className="h-14 w-14 text-salt-orange/20" />
           </div>
         )}
+
       </div>
 
       {/* CONTENT */}
@@ -211,12 +214,13 @@ export function ProductCard({
       <div className="flex flex-1 flex-col p-5">
 
         <div>
-          <p className="text-[9px] font-black uppercase tracking-[0.22em] text-salt-orange-bright">
+
+          <p className="font-display text-[9px] font-bold uppercase tracking-[0.22em] text-salt-orange-bright">
             #SALT Webshop
           </p>
 
           <h3
-            className={`mt-2 line-clamp-2 min-h-[48px] text-lg font-black uppercase leading-tight tracking-wide text-white transition-colors ${
+            className={`mt-2 line-clamp-2 min-h-[46px] font-display text-lg font-bold uppercase leading-tight tracking-wide text-white transition-colors ${
               isOutOfStock
                 ? ''
                 : 'group-hover:text-salt-orange-bright'
@@ -236,9 +240,10 @@ export function ProductCard({
               </span>
             )}
           </div>
+
         </div>
 
-        {/* PRICE / CART */}
+        {/* PRICE */}
 
         <div className="mt-auto pt-5">
 
@@ -248,13 +253,13 @@ export function ProductCard({
 
             <div className="min-w-0">
 
-              <p className="mb-1 text-[9px] font-black uppercase tracking-[0.18em] text-neutral-600">
+              <p className="mb-1 font-display text-[9px] font-bold uppercase tracking-[0.18em] text-neutral-600">
                 Price
               </p>
 
               <div className="flex flex-wrap items-baseline gap-2">
 
-                <span className="text-2xl font-black text-salt-orange-bright">
+                <span className="font-display text-2xl font-black text-salt-orange-bright">
                   {product.price > 0
                     ? `£${product.price.toFixed(2)}`
                     : 'Free'}
@@ -315,27 +320,38 @@ export function ProductCard({
                 )}
 
               </div>
+
             </div>
+
+            {/* ADD TO CART */}
 
             <motion.button
               onClick={handleAddToCart}
               whileTap={
                 isOutOfStock
                   ? undefined
-                  : { scale: 0.9 }
+                  : { scale: 0.92 }
               }
               animate={
                 added
-                  ? { scale: [1, 1.15, 1] }
+                  ? {
+                      scale: [
+                        1,
+                        1.12,
+                        1,
+                      ],
+                    }
                   : {}
               }
-              transition={{ duration: 0.3 }}
-              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-md border transition-all ${
+              transition={{
+                duration: 0.25,
+              }}
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-sm border transition-colors ${
                 isOutOfStock
                   ? 'cursor-not-allowed border-steel bg-steel/30 text-neutral-600'
                   : added
-                    ? 'border-green-500 bg-green-500 text-black'
-                    : 'cursor-pointer border-salt-orange bg-salt-orange text-black hover:border-salt-orange-bright hover:bg-salt-orange-bright hover:shadow-[0_0_20px_rgba(250,73,0,0.25)]'
+                    ? 'border-emerald-500 bg-emerald-500 text-black'
+                    : 'cursor-pointer border-salt-orange bg-salt-orange text-black hover:border-salt-orange-bright hover:bg-salt-orange-bright'
               }`}
               aria-label={
                 product.subscription &&
@@ -346,17 +362,19 @@ export function ProductCard({
               disabled={isOutOfStock}
             >
               {added ? (
-                <Check className="h-5 w-5" />
+                <Check className="h-4 w-4" />
               ) : product.subscription &&
                 !needsCustomFields ? (
-                <ArrowRight className="h-5 w-5" />
+                <ArrowRight className="h-4 w-4" />
               ) : (
-                <ShoppingCart className="h-5 w-5" />
+                <ShoppingCart className="h-4 w-4" />
               )}
             </motion.button>
 
           </div>
+
         </div>
+
       </div>
     </div>
   );
@@ -366,14 +384,14 @@ export function ProductCard({
       className="h-full"
       initial={{
         opacity: 0,
-        y: 16,
+        y: 12,
       }}
       animate={{
         opacity: 1,
         y: 0,
       }}
       transition={{
-        duration: 0.3,
+        duration: 0.25,
       }}
     >
       {isOutOfStock ? (

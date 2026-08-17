@@ -294,7 +294,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
     }
 
     if (product?.donation && (!donationAmount || donationAmount < (product?.min_donation || 0))) {
-      setError(`Donation must be at least $${product?.min_donation || 0}`);
+      setError(`Donation must be at least £${product?.min_donation || 0}`);
       setTimeout(() => setError(null), 5000);
       return;
     }
@@ -469,9 +469,9 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   if (isLoading) {
     return (
       <div className="min-h-screen py-12">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="h-96 rounded-xl bg-card border border-border animate-pulse" />
+        <div className="mx-auto max-w-[1400px] px-6">
+          <div className="mx-auto max-w-6xl">
+            <div className="h-96 animate-pulse rounded-md border border-steel bg-charcoal" />
           </div>
         </div>
       </div>
@@ -481,13 +481,13 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   if (!product) {
     return (
       <div className="min-h-screen py-12">
-        <div className="container mx-auto px-4">
-          <div className="text-center py-20">
-            <X className="w-16 h-16 text-muted mx-auto mb-4" />
-            <h1 className="text-2xl font-bold mb-2">Product Not Found</h1>
-            <p className="text-muted mb-8">The product you're looking for doesn't exist.</p>
+        <div className="mx-auto max-w-[1400px] px-6">
+          <div className="texture-plate rounded-md border border-steel bg-charcoal py-20 text-center">
+            <X className="mx-auto mb-4 h-14 w-14 text-neutral-700" />
+            <h1 className="mb-2 font-display text-2xl font-bold uppercase text-white">Product Not Found</h1>
+            <p className="mb-8 text-sm text-neutral-500">The product you&apos;re looking for doesn&apos;t exist.</p>
             <Link href="/shop">
-              <button className="px-6 py-3 rounded-lg bg-primary text-background font-semibold cursor-pointer">
+              <button className="salt-button">
                 Back to Shop
               </button>
             </Link>
@@ -501,9 +501,9 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   if (product.status === false) {
     return (
       <div className="min-h-screen py-12">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="h-96 rounded-xl bg-card border border-border animate-pulse" />
+        <div className="mx-auto max-w-[1400px] px-6">
+          <div className="mx-auto max-w-6xl">
+            <div className="h-96 animate-pulse rounded-md border border-steel bg-charcoal" />
           </div>
         </div>
       </div>
@@ -512,19 +512,19 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
   return (
     <div className="min-h-screen py-12">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
+      <div className="mx-auto max-w-[1400px] px-6">
+        <div className="mx-auto max-w-6xl">
           {/* Back Button */}
-          <Link href="/shop" className="inline-flex items-center gap-2 text-muted hover:text-foreground mb-8 transition-colors">
-            <ArrowLeft className="w-4 h-4" />
+          <Link href="/shop" className="mb-8 inline-flex items-center gap-2 font-display text-xs font-bold uppercase tracking-wider text-neutral-500 transition-colors hover:text-salt-orange-bright">
+            <ArrowLeft className="h-4 w-4" />
             Back to Shop
           </Link>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12">
             {/* Image Gallery */}
             <div className="space-y-4">
               {/* Main Image */}
-              <div className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-card border border-border group">
+              <div className="group relative aspect-square overflow-hidden rounded-md border border-steel bg-charcoal texture-plate">
                 {allMedia.length > 0 ? (
                   <>
                     {allMedia[selectedImageIndex]?.type === 'image' ? (
@@ -536,7 +536,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                           src={allMedia[selectedImageIndex].url}
                           alt={product.name}
                           fill
-                          className="object-contain"
+                          className="object-contain p-4"
                           unoptimized
                         />
                       </div>
@@ -573,7 +573,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                             e.stopPropagation();
                             handlePreviousImage();
                           }}
-                          className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
+                          className="absolute left-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-md border border-steel-light bg-black/70 text-white opacity-0 transition-all hover:border-salt-orange/60 hover:text-salt-orange-bright group-hover:opacity-100 md:flex"
                           aria-label="Previous image"
                         >
                           <ChevronLeft className="w-6 h-6 text-white" />
@@ -583,7 +583,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                             e.stopPropagation();
                             handleNextImage();
                           }}
-                          className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
+                          className="absolute right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-md border border-steel-light bg-black/70 text-white opacity-0 transition-all hover:border-salt-orange/60 hover:text-salt-orange-bright group-hover:opacity-100 md:flex"
                           aria-label="Next image"
                         >
                           <ChevronRight className="w-6 h-6 text-white" />
@@ -594,7 +594,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                     {/* Fullscreen Button */}
                     <button
                       onClick={() => openFullscreenAtIndex(selectedImageIndex)}
-                      className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
+                      className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-md border border-steel-light bg-black/70 text-white opacity-0 transition-all hover:border-salt-orange/60 hover:text-salt-orange-bright group-hover:opacity-100"
                       aria-label="Fullscreen"
                     >
                       <Maximize className="w-5 h-5 text-white" />
@@ -610,17 +610,17 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                 <div className="absolute top-4 right-4 flex flex-col gap-2 items-end">
                   {/* Non-recurring discount badge - shows period and normal price after first payment */}
                   {product.subscription && product.recurring_discount === false && product.old_price && product.old_price > product.price && product.period_num && product.duration_periodicity && (
-                    <span className="px-3 py-1.5 text-xs font-semibold rounded-full border border-primary/70 text-primary bg-background/60">
-                      {product.period_num} {product.duration_periodicity}{product.period_num > 1 ? 's' : ''} at ${product.old_price.toFixed(2)}
+                    <span className="rounded-md border border-salt-orange/40 bg-black/70 px-3 py-1.5 font-display text-[10px] font-bold uppercase tracking-wider text-salt-orange-bright backdrop-blur">
+                      {product.period_num} {product.duration_periodicity}{product.period_num > 1 ? 's' : ''} at £{product.old_price.toFixed(2)}
                     </span>
                   )}
                   {product.percent_off && product.percent_off > 0 && product.price > 0 && (
-                    <span className="px-3 py-1.5 text-xs font-semibold rounded-full border border-primary/70 text-primary bg-background/60">
+                    <span className="rounded-md border border-salt-orange/40 bg-black/70 px-3 py-1.5 font-display text-[10px] font-bold uppercase tracking-wider text-salt-orange-bright backdrop-blur">
                       -{product.percent_off}%
                     </span>
                   )}
                   {typeof product.stock === 'number' && (
-                    <span className="px-3 py-1.5 text-xs font-semibold rounded-full border border-red-500/70 text-red-400 bg-background/60">
+                    <span className="rounded-md border border-red-500/40 bg-black/70 px-3 py-1.5 font-display text-[10px] font-bold uppercase tracking-wider text-red-400 backdrop-blur">
                       {product.stock === 0 ? 'Out of stock' : `Stock: ${product.stock}`}
                     </span>
                   )}
@@ -637,10 +637,10 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                         pauseYouTubeVideo();
                         setSelectedImageIndex(index);
                       }}
-                      className={`relative aspect-square rounded-lg overflow-hidden bg-gradient-card border-2 transition-all cursor-pointer ${
+                      className={`relative aspect-square overflow-hidden rounded-md bg-charcoal border transition-all cursor-pointer ${
                         selectedImageIndex === index
-                          ? 'border-primary'
-                          : 'border-border hover:border-primary/50'
+                          ? 'border-salt-orange'
+                          : 'border-steel hover:border-salt-orange/50'
                       }`}
                     >
                       {media.type === 'image' ? (
@@ -648,7 +648,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                           src={media.url}
                           alt={`${product.name} ${index + 1}`}
                           fill
-                          className="object-contain"
+                          className="object-contain p-4"
                           unoptimized
                         />
                       ) : (
@@ -677,21 +677,22 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
             {/* Details */}
             <div className="flex flex-col">
-              <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
+              <p className="font-display text-xs font-bold uppercase tracking-[0.24em] text-salt-orange-bright">#SALT Webshop</p>
+              <h1 className="mt-2 mb-4 font-display text-4xl font-extrabold uppercase tracking-tight text-white">{product.name}</h1>
 
-              <div className="flex items-baseline gap-4 mb-6">
-                <span className="text-5xl font-bold text-primary">
-                  {calculateTotalPrice() > 0 ? `$${calculateTotalPrice().toFixed(2)}` : 'Free'}
+              <div className="mb-6 flex flex-wrap items-baseline gap-3">
+                <span className="font-display text-5xl font-black text-salt-orange-bright">
+                  {calculateTotalPrice() > 0 ? `£${calculateTotalPrice().toFixed(2)}` : 'Free'}
                 </span>
                 {/* For subscriptions with non-recurring discount, show "then original price / period" */}
                 {product.subscription && product.recurring_discount === false && product.old_price && product.old_price > product.price ? (
                   <>
-                    <span className="text-lg text-muted">then</span>
-                    <span className="text-2xl text-muted">
-                      ${calculateThenPrice().toFixed(2)}
+                    <span className="text-sm text-neutral-500">then</span>
+                    <span className="text-xl text-neutral-500">
+                      £{calculateThenPrice().toFixed(2)}
                     </span>
                     {product.period_num && product.period_num > 0 && product.duration_periodicity ? (
-                      <span className="text-lg text-muted">
+                      <span className="text-sm text-neutral-500">
                         / {product.period_num > 1 ? `${product.period_num} ` : ''}{product.duration_periodicity}
                         {product.period_num > 1 ? 's' : ''}
                       </span>
@@ -701,46 +702,46 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                   <>
                     {/* Normal subscription period display */}
                     {product.subscription && product.period_num && product.period_num > 0 && product.duration_periodicity ? (
-                      <span className="text-lg text-muted">
+                      <span className="text-sm text-neutral-500">
                         / {product.period_num > 1 ? `${product.period_num} ` : ''}{product.duration_periodicity}
                         {product.period_num > 1 ? 's' : ''}
                       </span>
                     ) : null}
                     {/* Show old price strikethrough for recurring discounts or non-subscriptions */}
                     {product.old_price && product.old_price > product.price && product.price > 0 ? (
-                      <span className="text-2xl text-muted line-through">
-                        ${(product.old_price * quantity).toFixed(2)}
+                      <span className="text-xl text-neutral-600 line-through">
+                        £{(product.old_price * quantity).toFixed(2)}
                       </span>
                     ) : null}
                   </>
                 )}
                 {product.custom_fields && product.custom_fields.length > 0 && product.price > 0 ? (
-                  <span className="text-sm text-muted">
-                    (Base: ${(product.price * quantity).toFixed(2)})
+                  <span className="text-sm text-neutral-500">
+                    (Base: £{(product.price * quantity).toFixed(2)})
                   </span>
                 ) : null}
               </div>
 
               {product.subscription ? (
-                <div className="mb-6 p-4 rounded-lg bg-secondary/10 border border-secondary/20">
+                <div className="mb-6 rounded-md border border-salt-orange/20 bg-salt-orange/5 p-4">
                   <p className="text-sm">
-                    <span className="font-semibold">Subscription:</span> Renews every{' '}
+                    <span className="font-display font-bold uppercase text-white">Subscription:</span> Renews every{' '}
                     {product.period_num && product.period_num > 1 ? `${product.period_num} ` : ''}{product.duration_periodicity}
                     {product.period_num && product.period_num > 1 ? 's' : ''}
                   </p>
                   {product.trial ? (
                     <p className="text-sm mt-2">
-                      <span className="font-semibold text-primary">Free Trial:</span> Included
+                      <span className="font-display font-bold uppercase text-salt-orange-bright">Free Trial:</span> Included
                     </p>
                   ) : null}
                 </div>
               ) : null}
 
               {product.description && (
-                <div className="mb-6">
-                  <h2 className="text-lg font-semibold mb-2">Description</h2>
+                <div className="mb-6 rounded-md border border-steel bg-charcoal p-5 texture-plate">
+                  <h2 className="mb-2 font-display text-lg font-bold uppercase text-white">Description</h2>
                   <div 
-                    className="text-white leading-relaxed prose prose-invert max-w-none"
+                    className="max-w-none leading-relaxed text-neutral-300 prose prose-invert"
                     dangerouslySetInnerHTML={{ __html: product.description }}
                   />
                 </div>
@@ -749,8 +750,8 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               {/* Donation Input */}
               {product?.donation && (
                 <div className="mb-6 space-y-2">
-                  <h2 className="text-lg font-semibold">
-                    Donation Amount {product?.min_donation && `(Minimum: $${product.min_donation})`}
+                  <h2 className="font-display text-lg font-bold uppercase text-white">
+                    Donation Amount {product?.min_donation && `(Minimum: £${product.min_donation})`}
                   </h2>
                   <input
                     type="number"
@@ -758,8 +759,8 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                     step="0.01"
                     value={donationAmount ?? ''}
                     onChange={(e) => setDonationAmount(e.target.value ? Number(e.target.value) : undefined)}
-                    placeholder={`Enter donation amount${product?.min_donation ? ` (minimum $${product.min_donation})` : ''}`}
-                    className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary outline-none transition-colors"
+                    placeholder={`Enter donation amount${product?.min_donation ? ` (minimum £${product.min_donation})` : ''}`}
+                    className="w-full rounded-md border border-steel bg-charcoal px-4 py-3 text-white transition-colors focus:border-salt-orange/70"
                   />
                 </div>
               )}
@@ -767,11 +768,11 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               {/* Server Selection */}
               {product.server_choice && product.server_options && product.server_options.length > 0 && (
                 <div className="mb-6 space-y-2">
-                  <h2 className="text-lg font-semibold">Select Server</h2>
+                  <h2 className="font-display text-lg font-bold uppercase text-white">Select Server</h2>
                   <select
                     value={serverSelection ?? ''}
                     onChange={(e) => setServerSelection(Number(e.target.value))}
-                    className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary outline-none transition-colors cursor-pointer"
+                    className="w-full cursor-pointer rounded-md border border-steel bg-charcoal px-4 py-3 text-white transition-colors focus:border-salt-orange/70"
                   >
                     <option value="" disabled>
                       Choose a server
@@ -788,7 +789,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               {/* Custom Fields */}
               {product.custom_fields && product.custom_fields.length > 0 && (
                 <div className="mb-6 space-y-4">
-                  <h2 className="text-lg font-semibold">Customize Your Order</h2>
+                  <h2 className="font-display text-lg font-bold uppercase text-white">Customize Your Order</h2>
                   {product.custom_fields
                     .sort((a, b) => a.order - b.order)
                     .filter((field) => isFieldVisible(field))
@@ -799,22 +800,22 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                         <div key={field.id} className="space-y-2">
                           {/* Label - hidden for number/range as they have custom header */}
                           {field.type !== 'number' && field.type !== 'range' && (
-                            <label className="text-sm font-medium flex items-center gap-2">
+                            <label className="flex items-center gap-2 text-sm font-semibold text-neutral-300">
                               {field.name}
                               {field.required && <span className="text-accent">*</span>}
                               {field.instruction && (
                                 <div className="relative group">
-                                  <HelpCircle className="w-4 h-4 text-muted hover:text-primary cursor-help transition-colors" />
+                                  <HelpCircle className="h-4 w-4 cursor-help text-neutral-500 transition-colors hover:text-salt-orange-bright" />
                                   <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-10 w-64">
-                                    <div className="bg-card border border-border rounded-lg p-3 shadow-lg text-xs text-foreground whitespace-pre-wrap">
+                                    <div className="whitespace-pre-wrap rounded-md border border-steel bg-charcoal p-3 text-xs text-neutral-300 shadow-xl">
                                       {field.instruction}
                                     </div>
                                   </div>
                                 </div>
                               )}
                               {field.price && field.price > 0 && field.type !== 'select' && (
-                                <span className="text-primary text-xs">
-                                  +${field.price.toFixed(2)}
+                                <span className="text-xs text-salt-orange-bright">
+                                  +£{field.price.toFixed(2)}
                                 </span>
                               )}
                             </label>
@@ -822,7 +823,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
                           {/* Checkbox */}
                           {field.type === 'checkbox' && (
-                            <label className="flex items-start gap-3 p-4 rounded-lg bg-card border border-border hover:border-primary transition-colors cursor-pointer">
+                            <label className="flex cursor-pointer items-start gap-3 rounded-md border border-steel bg-charcoal p-4 transition-colors hover:border-salt-orange/50">
                               <input
                                 type="checkbox"
                                 checked={customFields[key] || false}
@@ -833,8 +834,8 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                                 <div className="flex items-center justify-between">
                                   <span className="font-medium">{field.name}</span>
                                   {field.price && field.price > 0 && (
-                                    <span className="text-primary font-semibold">
-                                      +${field.price.toFixed(2)}
+                                    <span className="font-semibold text-salt-orange-bright">
+                                      +£{field.price.toFixed(2)}
                                     </span>
                                   )}
                                 </div>
@@ -853,7 +854,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                               onChange={(e) => handleCustomFieldChange(field, e.target.value)}
                               placeholder={field.default_value?.toString() || ''}
                               required={field.required}
-                              className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary outline-none transition-colors"
+                              className="w-full rounded-md border border-steel bg-charcoal px-4 py-3 text-white transition-colors focus:border-salt-orange/70"
                             />
                           )}
 
@@ -865,7 +866,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                               onChange={(e) => handleCustomFieldChange(field, e.target.value)}
                               placeholder={field.default_value?.toString() || ''}
                               required={field.required}
-                              className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary outline-none transition-colors"
+                              className="w-full rounded-md border border-steel bg-charcoal px-4 py-3 text-white transition-colors focus:border-salt-orange/70"
                             />
                           )}
 
@@ -873,7 +874,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                           {(field.type === 'number' || field.type === 'range') && (
                             <>
                               <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm text-muted">
+                                <span className="text-sm text-neutral-500">
                                   {field.name}
                                 </span>
                                 <span className="text-sm font-medium">
@@ -890,7 +891,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                                       step={field.step || 1}
                                       value={customFields[key] ?? field.default_value ?? field.minimum ?? 0}
                                       onChange={(e) => handleCustomFieldChange(field, parseFloat(e.target.value))}
-                                      className="w-full accent-primary"
+                                      className="w-full accent-salt-orange"
                                     />
                                     <div className="flex justify-between text-sm text-muted">
                                       <span>{field.minimum || 0}</span>
@@ -907,7 +908,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                                     onChange={(e) => handleCustomFieldChange(field, parseFloat(e.target.value))}
                                     placeholder={field.default_value?.toString() || ''}
                                     required={field.required}
-                                    className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary outline-none transition-colors"
+                                    className="w-full rounded-md border border-steel bg-charcoal px-4 py-3 text-white transition-colors focus:border-salt-orange/70"
                                   />
                                 )}
                               </div>
@@ -921,7 +922,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                                 value={customFields[key] || ''}
                                 onChange={(e) => handleCustomFieldChange(field, e.target.value)}
                                 required={field.required}
-                                className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary outline-none transition-colors cursor-pointer appearance-none pr-10"
+                                className="w-full cursor-pointer appearance-none rounded-md border border-steel bg-charcoal px-4 py-3 pr-10 text-white transition-colors focus:border-salt-orange/70"
                               >
                                 <option value="" disabled>
                                   Choose your {field.name.toLowerCase()}
@@ -931,7 +932,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                                   .map((option) => (
                                     <option key={option.id} value={option.id.toString()}>
                                       {option.name}
-                                      {option.price !== undefined && option.price !== null && option.price > 0 && ` (+$${option.price.toFixed(2)})`}
+                                      {option.price !== undefined && option.price !== null && option.price > 0 && ` (+£${option.price.toFixed(2)})`}
                                     </option>
                                   ))}
                               </select>
@@ -968,7 +969,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               {/* Custom Rules Display */}
               {product.custom_rules && product.custom_rules.length > 0 && (
                 <div className="mb-6 space-y-3">
-                  <h2 className="text-lg font-semibold">Field Limits</h2>
+                  <h2 className="font-display text-lg font-bold uppercase text-white">Field Limits</h2>
                   {validateCustomRules(product.custom_rules, customFields, product.custom_fields)
                     .map((validation) => {
                       const { rule, total, isValid } = validation;
@@ -979,7 +980,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                       return (
                         <div
                           key={rule.id}
-                          className={`p-4 rounded-lg border ${bgColor} ${borderColor}`}
+                          className={`rounded-md border p-4 ${bgColor} ${borderColor}`}
                         >
                           <p className={`text-sm font-medium ${statusColor}`}>
                             Total {rule.name}: <span className="font-bold">{total}</span>
@@ -1002,24 +1003,24 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               {/* Subscription Type Choice */}
               {canChooseOnetimeSubscription && (
                 <div className="mb-6 space-y-2">
-                  <label className="text-sm font-semibold">Subscription Type</label>
+                  <label className="font-display text-sm font-bold uppercase text-white">Subscription Type</label>
                   <div className="grid grid-cols-2 gap-3">
                     <button
                       onClick={() => setSubscriptionType('onetime')}
-                      className={`px-4 py-3 rounded-lg border-2 transition-all font-medium ${
+                      className={`rounded-md border px-4 py-3 font-display font-bold uppercase transition-all ${
                         subscriptionType === 'onetime'
-                          ? 'border-primary bg-primary/10 text-primary'
-                          : 'border-border bg-background hover:border-primary/50'
+                          ? 'border-salt-orange bg-salt-orange/10 text-salt-orange-bright'
+                          : 'border-steel bg-charcoal hover:border-salt-orange/50'
                       }`}
                     >
                       One-time
                     </button>
                     <button
                       onClick={() => setSubscriptionType('recurring')}
-                      className={`px-4 py-3 rounded-lg border-2 transition-all font-medium ${
+                      className={`rounded-md border px-4 py-3 font-display font-bold uppercase transition-all ${
                         subscriptionType === 'recurring'
-                          ? 'border-primary bg-primary/10 text-primary'
-                          : 'border-border bg-background hover:border-primary/50'
+                          ? 'border-salt-orange bg-salt-orange/10 text-salt-orange-bright'
+                          : 'border-steel bg-charcoal hover:border-salt-orange/50'
                       }`}
                     >
                       Subscribe
@@ -1039,11 +1040,11 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               {/* Quantity Selector (if allowed) */}
               {product.quantity && (
                 <div className="mb-6">
-                  <label className="text-sm font-semibold mb-2 block">Quantity</label>
+                  <label className="mb-2 block font-display text-sm font-bold uppercase text-white">Quantity</label>
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="w-10 h-10 rounded-lg bg-card border border-border hover:border-primary transition-colors cursor-pointer"
+                      className="h-10 w-10 cursor-pointer rounded-md border border-steel bg-charcoal transition-colors hover:border-salt-orange/60"
                     >
                       -
                     </button>
@@ -1057,7 +1058,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                       }}
                       min={1}
                       max={typeof product.stock === 'number' ? product.stock : undefined}
-                      className="w-20 h-10 text-center rounded-lg bg-card border border-border"
+                      className="h-10 w-20 rounded-md border border-steel bg-charcoal text-center text-white"
                     />
                     <button
                       onClick={() => {
@@ -1065,7 +1066,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                         setQuantity(Math.min(quantity + 1, maxQuantity));
                       }}
                       disabled={typeof product.stock === 'number' && quantity >= product.stock}
-                      className="w-10 h-10 rounded-lg bg-card border border-border hover:border-primary transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="h-10 w-10 cursor-pointer rounded-md border border-steel bg-charcoal transition-colors hover:border-salt-orange/60 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       +
                     </button>
@@ -1080,7 +1081,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
               {/* Error Message */}
               {error && (
-                <div className="mb-4 p-4 rounded-lg bg-red-500/10 border border-red-500/20 flex items-start gap-3 animate-in fade-in slide-in-from-top-2">
+                <div className="animate-in fade-in slide-in-from-top-2 mb-4 flex items-start gap-3 rounded-md border border-red-500/30 bg-red-500/10 p-4">
                   <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
                   <div className="flex-1">
                     <p className="text-sm font-medium text-red-500">{error}</p>
@@ -1101,7 +1102,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                   <button
                     onClick={handleAddToCart}
                     disabled={added || (typeof product.stock === 'number' && product.stock === 0)}
-                    className="w-full px-8 py-4 rounded-xl bg-primary hover:bg-primary/90 text-background font-semibold text-lg transition-all glow-primary hover:scale-105 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="salt-button w-full py-4 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {added ? (
                       <>
@@ -1120,10 +1121,10 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                 <button
                   onClick={handleBuyNow}
                   disabled={typeof product.stock === 'number' && product.stock === 0}
-                  className={`w-full px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`w-full rounded-md border px-8 py-4 font-display text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                     (product.subscription && !product.onetime_sub) || (product.subscription && subscriptionType === 'recurring')
-                      ? 'bg-primary hover:bg-primary/90 text-background glow-primary'
-                      : 'bg-secondary hover:bg-secondary/90 text-background glow-secondary'
+                      ? 'border-salt-orange bg-salt-orange text-black hover:bg-salt-orange-bright'
+                      : 'border-steel-light bg-charcoal text-white hover:border-salt-orange/60 hover:text-salt-orange-bright'
                   }`}
                 >
                   <ArrowRight className="w-5 h-5" />
@@ -1138,7 +1139,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
       {/* Fullscreen Media Modal */}
       {isFullscreen && allMedia.length > 0 && (
         <div 
-          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center overflow-hidden"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black/95 backdrop-blur-sm"
           style={{ touchAction: 'none' }}
           onClick={handleCloseFullscreen}
           onTouchStart={onTouchStart}
@@ -1148,7 +1149,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
           {/* Close Button */}
           <button
             onClick={handleCloseFullscreen}
-            className="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors cursor-pointer z-10"
+            className="absolute right-4 top-4 z-10 flex h-12 w-12 cursor-pointer items-center justify-center rounded-md border border-steel-light bg-charcoal/90 transition-colors hover:border-salt-orange/60 hover:text-salt-orange-bright"
             aria-label="Close fullscreen"
           >
             <X className="w-6 h-6 text-white" />
@@ -1156,7 +1157,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
           {/* Media Counter */}
           {allMedia.length > 1 && (
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-white/10 text-white text-sm font-medium">
+            <div className="absolute left-1/2 top-4 -translate-x-1/2 rounded-md border border-steel-light bg-charcoal/90 px-4 py-2 font-display text-sm font-bold text-white">
               {selectedImageIndex + 1} / {allMedia.length}
             </div>
           )}
@@ -1198,7 +1199,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                       src={media.url}
                       alt={`${product.name} ${index + 1}`}
                       fill
-                      className="object-contain"
+                      className="object-contain p-4"
                       unoptimized
                     />
                   </div>
@@ -1215,7 +1216,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                   e.stopPropagation();
                   handlePreviousImage();
                 }}
-                className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 items-center justify-center transition-colors cursor-pointer"
+                className="absolute left-4 top-1/2 hidden h-14 w-14 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border border-steel-light bg-charcoal/90 transition-colors hover:border-salt-orange/60 hover:text-salt-orange-bright md:flex"
                 aria-label="Previous image"
               >
                 <ChevronLeft className="w-8 h-8 text-white" />
@@ -1225,7 +1226,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                   e.stopPropagation();
                   handleNextImage();
                 }}
-                className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 items-center justify-center transition-colors cursor-pointer"
+                className="absolute right-4 top-1/2 hidden h-14 w-14 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border border-steel-light bg-charcoal/90 transition-colors hover:border-salt-orange/60 hover:text-salt-orange-bright md:flex"
                 aria-label="Next image"
               >
                 <ChevronRight className="w-8 h-8 text-white" />
@@ -1264,10 +1265,10 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                       }
                     }
                   }}
-                  className={`relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
+                  className={`relative h-16 w-16 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border transition-all ${
                     selectedImageIndex === index
-                      ? 'border-primary'
-                      : 'border-white/30 hover:border-white/60'
+                      ? 'border-salt-orange'
+                      : 'border-steel-light hover:border-salt-orange/60'
                   }`}
                 >
                   {media.type === 'image' ? (
@@ -1275,7 +1276,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                       src={media.url}
                       alt={`Thumbnail ${index + 1}`}
                       fill
-                      className="object-contain"
+                      className="object-contain p-4"
                       unoptimized
                     />
                   ) : (
@@ -1325,7 +1326,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
-              className="w-full h-full rounded-lg"
+              className="h-full w-full rounded-md border border-steel"
             />
           </div>
         </div>

@@ -1,31 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0807;
-  --foreground: #f5f5f5;
+  --background: #0a0908;
+  --foreground: #ece6de;
 
-  --primary: #fa4900;
-  --primary-bright: #ff6a00;
+  --primary: #ff7a1a;
+  --primary-bright: #ff9333;
 
-  --secondary: #c7c7c7;
-  --accent: #fa4900;
+  --secondary: #ece6de;
+  --accent: #ff7a1a;
 
-  --card: #12100f;
-  --card-light: #181513;
+  --card: #141210;
+  --card-light: #1c1916;
 
-  --border: #2a2522;
-  --border-light: #3b332e;
+  --border: #2a2521;
+  --border-light: #3a332c;
 
-  --muted: #8a817b;
+  --muted: #8f877f;
 
-  --void: #080706;
-  --charcoal: #12100f;
-  --charcoal-light: #191614;
-  --steel: #2a2522;
-  --steel-light: #3a332f;
+  --void: #0a0908;
+  --charcoal: #141210;
+  --charcoal-light: #1c1916;
 
-  --salt-orange: #fa4900;
-  --salt-orange-bright: #ff6a00;
+  --steel: #2a2521;
+  --steel-light: #3a332c;
+
+  --salt-orange: #ff7a1a;
+  --salt-orange-bright: #ff9333;
+  --salt-orange-dim: #b8540f;
 }
 
 @theme inline {
@@ -43,160 +45,121 @@
   --color-void: var(--void);
   --color-charcoal: var(--charcoal);
   --color-charcoal-light: var(--charcoal-light);
+
   --color-steel: var(--steel);
   --color-steel-light: var(--steel-light);
 
   --color-salt-orange: var(--salt-orange);
   --color-salt-orange-bright: var(--salt-orange-bright);
+  --color-salt-orange-dim: var(--salt-orange-dim);
 
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-body);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
+}
+
+html {
+  color-scheme: dark;
+  background: var(--color-void);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+
+  background: var(--color-void);
+  color: #ece6de;
+
+  background-image:
+    radial-gradient(
+      circle at 15% 0%,
+      rgba(255, 122, 26, 0.08),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(255, 122, 26, 0.05),
+      transparent 40%
+    );
+
+  background-attachment: fixed;
+  overflow-x: hidden;
 }
 
 * {
   box-sizing: border-box;
 }
 
-html {
-  background: var(--background);
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  background:
-    radial-gradient(
-      circle at 50% -10%,
-      rgba(250, 73, 0, 0.08),
-      transparent 34%
-    ),
-    linear-gradient(
-      180deg,
-      #0a0807 0%,
-      #0b0908 45%,
-      #080706 100%
-    );
-  color: var(--foreground);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  overflow-x: hidden;
-  min-height: 100vh;
-}
-
-/* =========================================================
-   SELECTION
-========================================================= */
-
-::selection {
-  background: rgba(250, 73, 0, 0.8);
-  color: #000;
-}
-
-/* =========================================================
-   SCROLLBAR
-========================================================= */
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #080706;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #322a25;
-  border-radius: 999px;
-  border: 2px solid #080706;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #fa4900;
-}
-
-/* =========================================================
-   LINKS
-========================================================= */
-
 a {
   color: inherit;
   text-decoration: none;
 }
 
+code {
+  font-family:
+    Menlo,
+    Monaco,
+    Consolas,
+    "Courier New",
+    monospace;
+}
+
 /* =========================================================
-   #SALT GLOW HELPERS
+   FONTS
 ========================================================= */
 
-.glow-primary {
-  box-shadow:
-    0 0 20px rgba(250, 73, 0, 0.22),
-    0 0 50px rgba(250, 73, 0, 0.08);
+.font-display {
+  font-family: var(--font-display);
 }
 
-.glow-secondary {
-  box-shadow:
-    0 0 20px rgba(255, 255, 255, 0.08);
+/* =========================================================
+   INDUSTRIAL / DIAMOND PLATE TEXTURE
+========================================================= */
+
+.texture-plate {
+  background-image:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.015) 0px,
+      rgba(255, 255, 255, 0.015) 1px,
+      transparent 1px,
+      transparent 12px
+    );
 }
 
-.glow-accent {
+/* =========================================================
+   GLOW
+========================================================= */
+
+.glow-border {
+  border: 1px solid rgba(255, 122, 26, 0.25);
+
   box-shadow:
-    0 0 25px rgba(250, 73, 0, 0.28);
+    0 0 0 1px rgba(255, 122, 26, 0.05),
+    0 8px 30px -12px rgba(255, 122, 26, 0.15);
 }
 
 .glow-text {
   text-shadow:
-    0 0 20px rgba(250, 73, 0, 0.35),
-    0 0 40px rgba(250, 73, 0, 0.15);
+    0 0 20px rgba(255, 122, 26, 0.35);
+}
+
+.glow-primary {
+  box-shadow:
+    0 0 0 1px rgba(255, 122, 26, 0.04),
+    0 8px 30px -12px rgba(255, 122, 26, 0.18);
 }
 
 /* =========================================================
-   GRADIENT HELPERS
+   CARD / PANEL
 ========================================================= */
-
-.gradient-primary {
-  background: linear-gradient(
-    135deg,
-    var(--salt-orange) 0%,
-    var(--salt-orange-bright) 100%
-  );
-}
 
 .gradient-card {
   background:
-    linear-gradient(
-      135deg,
-      rgba(250, 73, 0, 0.045) 0%,
-      rgba(255, 255, 255, 0.015) 100%
-    ),
-    #12100f;
-}
-
-/* =========================================================
-   SUBTLE GRID / TEXTURE
-========================================================= */
-
-.grid-pattern {
-  background-image:
-    linear-gradient(
-      rgba(250, 73, 0, 0.025) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(250, 73, 0, 0.025) 1px,
-      transparent 1px
-    );
-
-  background-size: 48px 48px;
-}
-
-.texture-plate {
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.015),
-      transparent 40%
-    ),
     repeating-linear-gradient(
       135deg,
       rgba(255, 255, 255, 0.012) 0px,
@@ -204,28 +167,31 @@ a {
       transparent 1px,
       transparent 12px
     ),
-    #12100f;
+    var(--color-charcoal);
 }
-
-/* =========================================================
-   PANELS
-========================================================= */
 
 .salt-panel {
   background:
-    linear-gradient(
+    repeating-linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.018),
-      transparent 45%
+      rgba(255, 255, 255, 0.012) 0px,
+      rgba(255, 255, 255, 0.012) 1px,
+      transparent 1px,
+      transparent 12px
     ),
-    #12100f;
+    var(--color-charcoal);
 
-  border: 1px solid var(--steel);
-  border-radius: 8px;
+  border: 1px solid var(--color-steel);
+  border-radius: 6px;
+
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .salt-panel:hover {
-  border-color: rgba(250, 73, 0, 0.45);
+  border-color: rgba(255, 122, 26, 0.4);
 }
 
 /* =========================================================
@@ -238,18 +204,20 @@ a {
   justify-content: center;
   gap: 0.5rem;
 
-  border-radius: 6px;
-  border: 1px solid var(--salt-orange);
+  border: 1px solid var(--color-salt-orange);
+  border-radius: 5px;
 
-  background: var(--salt-orange);
-  color: #080706;
-
-  font-size: 0.75rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  background: var(--color-salt-orange);
+  color: #0a0908;
 
   padding: 0.75rem 1rem;
+
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 
   transition:
     background 160ms ease,
@@ -260,12 +228,13 @@ a {
 }
 
 .salt-button:hover {
-  background: var(--salt-orange-bright);
-  border-color: var(--salt-orange-bright);
+  background: var(--color-salt-orange-bright);
+  border-color: var(--color-salt-orange-bright);
+
   transform: translateY(-1px);
 
   box-shadow:
-    0 0 20px rgba(250, 73, 0, 0.22);
+    0 0 18px rgba(255, 122, 26, 0.16);
 }
 
 .salt-button-outline {
@@ -274,18 +243,20 @@ a {
   justify-content: center;
   gap: 0.5rem;
 
-  border-radius: 6px;
-  border: 1px solid rgba(250, 73, 0, 0.45);
+  border: 1px solid rgba(255, 122, 26, 0.4);
+  border-radius: 5px;
 
-  background: transparent;
-  color: var(--salt-orange-bright);
-
-  font-size: 0.75rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  background: #141210;
+  color: #ece6de;
 
   padding: 0.75rem 1rem;
+
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 
   transition:
     background 160ms ease,
@@ -294,13 +265,44 @@ a {
 }
 
 .salt-button-outline:hover {
-  background: rgba(250, 73, 0, 0.08);
-  border-color: var(--salt-orange);
-  color: #fff;
+  border-color: var(--color-salt-orange);
+  color: var(--color-salt-orange-bright);
+}
+
+.salt-button-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  border: 1px solid var(--color-steel-light);
+  border-radius: 5px;
+
+  background: var(--color-charcoal);
+  color: #ece6de;
+
+  padding: 0.75rem 1rem;
+
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+
+  transition:
+    border-color 160ms ease,
+    color 160ms ease,
+    background 160ms ease;
+}
+
+.salt-button-ghost:hover {
+  border-color: rgba(255, 122, 26, 0.45);
+  color: var(--color-salt-orange-bright);
 }
 
 /* =========================================================
-   INPUTS
+   FORM ELEMENTS
 ========================================================= */
 
 input,
@@ -313,6 +315,46 @@ input:focus,
 select:focus,
 textarea:focus {
   outline: none;
+}
+
+/* =========================================================
+   SCANLINE HELPER
+========================================================= */
+
+.scanline-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+/* =========================================================
+   SELECTION
+========================================================= */
+
+::selection {
+  background: rgba(255, 122, 26, 0.35);
+  color: #fff;
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-steel);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-salt-orange-dim);
 }
 
 /* =========================================================
