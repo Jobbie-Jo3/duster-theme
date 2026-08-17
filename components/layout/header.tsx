@@ -19,6 +19,7 @@ export function Header({ initialStore }: HeaderProps) {
   const store = fetchedStore || initialStore;
   const cart = useCart();
   const pathname = usePathname();
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [prevCount, setPrevCount] = useState(0);
@@ -33,163 +34,295 @@ export function Header({ initialStore }: HeaderProps) {
   useEffect(() => {
     if (mounted && cartItemCount > prevCount) {
       setAnimate(true);
-      setTimeout(() => setAnimate(false), 600);
+
+      const timeout = setTimeout(() => {
+        setAnimate(false);
+      }, 600);
+
+      setPrevCount(cartItemCount);
+
+      return () => clearTimeout(timeout);
     }
+
     setPrevCount(cartItemCount);
   }, [cartItemCount, mounted, prevCount]);
 
   const isActive = (path: string) => {
-    if (path === '/') return pathname === '/';
+    if (path === '/') {
+      return pathname === '/';
+    }
+
     return pathname.startsWith(path);
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
+    <header className="sticky top-0 z-50 border-b border-steel/70 bg-void/95 backdrop-blur-xl">
+      {/* TOP ORANGE LINE */}
+      <div className="h-[2px] w-full bg-salt-orange" />
+
+      <div className="mx-auto max-w-[1600px] px-6">
+        <div className="flex h-[74px] items-center justify-between gap-6">
+
+          {/* ===================================================== */}
+          {/* LOGO / BRAND */}
+          {/* ===================================================== */}
+
+          <Link
+            href="/"
+            className="group flex min-w-0 items-center gap-3"
+          >
             {store?.logo ? (
-              <div className="relative w-10 h-10 rounded-lg overflow-hidden group-hover:scale-105 transition-transform">
+              <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-md border border-salt-orange/30 bg-charcoal transition-all duration-200 group-hover:border-salt-orange/70">
                 <Image
                   src={store.logo}
-                  alt={store.title || 'Store'}
+                  alt={store.title || '#SALT'}
                   fill
                   className="object-cover"
                   unoptimized
                 />
               </div>
             ) : (
-              <div className="w-10 h-10 rounded-lg bg-gradient-primary flex items-center justify-center text-2xl font-bold text-white">
-                {store?.title?.[0] || 'D'}
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-salt-orange/40 bg-salt-orange/10 font-black text-salt-orange-bright">
+                #
               </div>
             )}
-            <span className="text-xl font-bold text-white">
-              {store?.title || 'Duster Theme'}
-            </span>
+
+            <div className="min-w-0">
+              <p className="text-[9px] font-black uppercase tracking-[0.28em] text-salt-orange-bright">
+                Official Webshop
+              </p>
+
+              <p className="truncate font-black uppercase tracking-wide text-white sm:text-lg">
+                #SALT NO-WIPE
+              </p>
+            </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
-            {isActive('/') ? (
-              <span className="text-sm text-white font-semibold cursor-default">
-                Home
-              </span>
-            ) : (
-              <Link href="/" className="text-sm text-foreground/80 hover:text-foreground transition-colors">
-                Home
-              </Link>
-            )}
-            {isActive('/shop') ? (
-              <span className="text-sm text-white font-semibold cursor-default">
-                Shop
-              </span>
-            ) : (
-              <Link href="/shop" className="text-sm text-foreground/80 hover:text-foreground transition-colors">
-                Shop
-              </Link>
-            )}
+          {/* ===================================================== */}
+          {/* DESKTOP NAVIGATION */}
+          {/* ===================================================== */}
+
+          <nav className="hidden items-center gap-1 md:flex">
+
+            <NavItem
+              href="/"
+              label="Home"
+              active={isActive('/')}
+            />
+
+            <NavItem
+              href="/shop"
+              label="Shop"
+              active={isActive('/shop') || isActive('/product')}
+            />
+
             {store?.menu_links?.map((menuLink, index) => (
               <a
                 key={index}
                 href={menuLink.link.trim()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-foreground/80 hover:text-foreground transition-colors"
+                className="rounded-md px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-neutral-400 transition-all hover:bg-salt-orange/5 hover:text-white"
               >
                 {menuLink.title}
               </a>
             ))}
-            <Link href="/cart" className="relative">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-card border border-border hover:border-primary transition-colors">
-                <ShoppingCart className="w-5 h-5" />
-                <span className="text-sm font-medium">Cart</span>
-                <AnimatePresence>
-                  {mounted && cartItemCount > 0 && (
-                    <motion.span
-                      key={cartItemCount}
-                      initial={{ scale: 0 }}
-                      animate={{ 
-                        scale: animate ? [1, 1.5, 1] : 1,
-                        rotate: animate ? [0, 10, -10, 0] : 0
-                      }}
-                      exit={{ scale: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-primary text-background text-xs font-bold flex items-center justify-center glow-primary"
-                    >
-                      {cartItemCount}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
+
+            {/* CART */}
+
+            <Link
+              href="/cart"
+              className="relative ml-2"
+            >
+              <div
+                className={`flex items-center gap-2 rounded-md border px-4 py-2.5 text-xs font-black uppercase tracking-wider transition-all ${
+                  isActive('/cart') || isActive('/checkout')
+                    ? 'border-salt-orange bg-salt-orange text-black'
+                    : 'border-steel-light bg-charcoal text-neutral-300 hover:border-salt-orange/60 hover:text-white'
+                }`}
+              >
+                <ShoppingCart className="h-4 w-4" />
+                Cart
               </div>
-            </Link>
-          </nav>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 cursor-pointer"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <nav className="md:hidden py-4 space-y-2 border-t border-border">
-            <Link 
-              href="/" 
-              className="block py-2 text-foreground/80 hover:text-foreground transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link 
-              href="/shop" 
-              className="block py-2 text-foreground/80 hover:text-foreground transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Shop
-            </Link>
-            {store?.menu_links?.map((menuLink, index) => (
-              <a
-                key={index}
-                href={menuLink.link.trim()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block py-2 text-foreground/80 hover:text-foreground transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {menuLink.title}
-              </a>
-            ))}
-            <Link 
-              href="/cart" 
-              className="flex items-center justify-between py-2 text-foreground/80 hover:text-foreground transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <span>Cart</span>
               <AnimatePresence>
-                {cartItemCount > 0 && (
+                {mounted && cartItemCount > 0 ? (
                   <motion.span
                     key={cartItemCount}
                     initial={{ scale: 0 }}
-                    animate={{ 
-                      scale: animate ? [1, 1.5, 1] : 1,
-                      rotate: animate ? [0, 10, -10, 0] : 0
+                    animate={{
+                      scale: animate ? [1, 1.45, 1] : 1,
+                      rotate: animate ? [0, 10, -10, 0] : 0,
                     }}
                     exit={{ scale: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="w-6 h-6 rounded-full bg-primary text-background text-xs font-bold flex items-center justify-center"
+                    className="absolute -right-2 -top-2 flex h-6 min-w-6 items-center justify-center rounded-full border-2 border-void bg-salt-orange px-1 text-[10px] font-black text-black shadow-[0_0_18px_rgba(250,73,0,0.35)]"
                   >
                     {cartItemCount}
                   </motion.span>
-                )}
+                ) : null}
               </AnimatePresence>
             </Link>
           </nav>
-        )}
+
+          {/* ===================================================== */}
+          {/* MOBILE BUTTON */}
+          {/* ===================================================== */}
+
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((value) => !value)}
+            className="flex h-10 w-10 items-center justify-center rounded-md border border-steel-light bg-charcoal text-white transition-colors hover:border-salt-orange/60 hover:text-salt-orange-bright md:hidden"
+            aria-label="Toggle navigation"
+          >
+            {mobileMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
+          </button>
+        </div>
+
+        {/* ======================================================= */}
+        {/* MOBILE NAVIGATION */}
+        {/* ======================================================= */}
+
+        <AnimatePresence>
+          {mobileMenuOpen ? (
+            <motion.nav
+              initial={{
+                opacity: 0,
+                height: 0,
+              }}
+              animate={{
+                opacity: 1,
+                height: 'auto',
+              }}
+              exit={{
+                opacity: 0,
+                height: 0,
+              }}
+              className="overflow-hidden border-t border-steel/60 md:hidden"
+            >
+              <div className="space-y-2 py-4">
+
+                <MobileNavItem
+                  href="/"
+                  label="Home"
+                  active={isActive('/')}
+                  onClick={() => setMobileMenuOpen(false)}
+                />
+
+                <MobileNavItem
+                  href="/shop"
+                  label="Shop"
+                  active={isActive('/shop') || isActive('/product')}
+                  onClick={() => setMobileMenuOpen(false)}
+                />
+
+                {store?.menu_links?.map((menuLink, index) => (
+                  <a
+                    key={index}
+                    href={menuLink.link.trim()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block rounded-md border border-transparent px-4 py-3 text-xs font-black uppercase tracking-wider text-neutral-400 transition-colors hover:border-steel-light hover:bg-charcoal hover:text-white"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {menuLink.title}
+                  </a>
+                ))}
+
+                <Link
+                  href="/cart"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center justify-between rounded-md border px-4 py-3 text-xs font-black uppercase tracking-wider transition-all ${
+                    isActive('/cart') || isActive('/checkout')
+                      ? 'border-salt-orange bg-salt-orange text-black'
+                      : 'border-steel-light bg-charcoal text-neutral-300'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <ShoppingCart className="h-4 w-4" />
+                    Cart
+                  </div>
+
+                  <AnimatePresence>
+                    {mounted && cartItemCount > 0 ? (
+                      <motion.span
+                        key={cartItemCount}
+                        initial={{ scale: 0 }}
+                        animate={{
+                          scale: animate ? [1, 1.45, 1] : 1,
+                        }}
+                        exit={{ scale: 0 }}
+                        className="flex h-6 min-w-6 items-center justify-center rounded-full bg-salt-orange px-1 text-[10px] font-black text-black"
+                      >
+                        {cartItemCount}
+                      </motion.span>
+                    ) : null}
+                  </AnimatePresence>
+                </Link>
+
+              </div>
+            </motion.nav>
+          ) : null}
+        </AnimatePresence>
+
       </div>
     </header>
+  );
+}
+
+function NavItem({
+  href,
+  label,
+  active,
+}: {
+  href: string;
+  label: string;
+  active: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`relative rounded-md px-4 py-2 text-xs font-black uppercase tracking-[0.12em] transition-all ${
+        active
+          ? 'bg-salt-orange/10 text-salt-orange-bright'
+          : 'text-neutral-400 hover:bg-white/[0.025] hover:text-white'
+      }`}
+    >
+      {label}
+
+      {active ? (
+        <span className="absolute inset-x-4 -bottom-[17px] h-[2px] bg-salt-orange" />
+      ) : null}
+    </Link>
+  );
+}
+
+function MobileNavItem({
+  href,
+  label,
+  active,
+  onClick,
+}: {
+  href: string;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className={`block rounded-md border px-4 py-3 text-xs font-black uppercase tracking-wider transition-all ${
+        active
+          ? 'border-salt-orange/40 bg-salt-orange/10 text-salt-orange-bright'
+          : 'border-transparent text-neutral-400 hover:border-steel-light hover:bg-charcoal hover:text-white'
+      }`}
+    >
+      {label}
+    </Link>
   );
 }

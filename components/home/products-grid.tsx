@@ -2,73 +2,124 @@
 
 import { useProducts } from '@/hooks/use-api';
 import { ProductCard } from '@/components/product/product-card';
-import { ArrowRight, TrendingUp } from 'lucide-react';
+import { ArrowRight, Flame } from 'lucide-react';
 import Link from 'next/link';
 
 export function ProductsGrid() {
-  const { data: products, isLoading } = useProducts({ maxPage: 12, onlyEnabled: true });
+  const { data: products, isLoading } = useProducts({
+    maxPage: 12,
+    onlyEnabled: true,
+  });
 
-  const featuredProducts = products?.products.filter(p => p.featured) || [];
+  const featuredProducts =
+    products?.products.filter((product) => product.featured) || [];
+
   const allProducts = products?.products || [];
 
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {[...Array(8)].map((_, index) => (
+          <div
+            key={index}
+            className="h-[380px] animate-pulse rounded-lg border border-steel/70 bg-charcoal"
+          />
+        ))}
+      </div>
+    );
+  }
+
+  if (allProducts.length === 0) {
+    return (
+      <div className="rounded-lg border border-steel/70 bg-charcoal p-12 text-center">
+        <p className="text-sm font-bold uppercase tracking-wider text-neutral-500">
+          No products are currently available.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <>
-      {/* Featured Products */}
+    <div className="space-y-14">
+
+      {/* FEATURED PRODUCTS */}
+
       {featuredProducts.length > 0 ? (
-        <section className="py-16 relative">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center gap-3 mb-8">
-              <TrendingUp className="w-6 h-6 text-primary" />
-              <h2 className="text-3xl font-bold">Featured Products</h2>
+        <section>
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+
+            <div>
+              <div className="flex items-center gap-2">
+                <Flame className="h-4 w-4 text-salt-orange-bright" />
+
+                <p className="text-[10px] font-black uppercase tracking-[0.25em] text-salt-orange-bright">
+                  Popular Picks
+                </p>
+              </div>
+
+              <h3 className="mt-2 text-2xl font-black uppercase tracking-tight text-white">
+                Featured
+              </h3>
             </div>
 
-            {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="h-96 rounded-xl bg-card border border-border animate-pulse" />
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {featuredProducts.slice(0, 4).map((product) => (
-                  <ProductCard key={product.id} product={product} hideFeaturedBadge />
-                ))}
-              </div>
-            )}
+            <Link
+              href="/shop"
+              className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-neutral-500 transition-colors hover:text-salt-orange-bright"
+            >
+              View Full Shop
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+
+          </div>
+
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {featuredProducts.slice(0, 4).map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                hideFeaturedBadge
+              />
+            ))}
           </div>
         </section>
       ) : null}
 
-      {/* All Products */}
-      <section className="py-16 relative">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold">All Products</h2>
-            <Link href="/shop" className="text-primary hover:text-primary/80 font-medium flex items-center gap-2">
-              View All
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+      {/* ALL PRODUCTS */}
+
+      <section>
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-salt-orange-bright">
+              #SALT Webshop
+            </p>
+
+            <h3 className="mt-2 text-2xl font-black uppercase tracking-tight text-white">
+              All Products
+            </h3>
           </div>
 
-          {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="h-96 rounded-xl bg-card border border-border animate-pulse" />
-              ))}
-            </div>
-          ) : allProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {allProducts.slice(0, 8).map((product) => (
-                <ProductCard key={product.id} product={product} hideFeaturedBadge />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-muted">No products available at the moment.</p>
-            </div>
-          )}
+          <Link
+            href="/shop"
+            className="flex items-center gap-2 rounded-md border border-steel-light bg-charcoal px-4 py-2.5 text-xs font-black uppercase tracking-wider text-neutral-400 transition-all hover:border-salt-orange/60 hover:text-salt-orange-bright"
+          >
+            View All
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {allProducts.slice(0, 8).map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              hideFeaturedBadge
+            />
+          ))}
         </div>
       </section>
-    </>
+
+    </div>
   );
 }

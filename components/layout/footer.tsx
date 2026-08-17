@@ -2,7 +2,15 @@
 
 import Link from 'next/link';
 import { useStore } from '@/hooks/use-api';
-import { FaFacebook, FaInstagram, FaYoutube, FaTwitch, FaDiscord, FaTiktok, FaSteam } from 'react-icons/fa';
+import {
+  FaFacebook,
+  FaInstagram,
+  FaYoutube,
+  FaTwitch,
+  FaDiscord,
+  FaTiktok,
+  FaSteam,
+} from 'react-icons/fa';
 import { SiX } from 'react-icons/si';
 import type { Store } from '@/lib/schemas';
 
@@ -15,43 +23,67 @@ export function Footer({ initialStore }: FooterProps) {
   const store = fetchedStore || initialStore;
   const currentYear = new Date().getFullYear();
 
-  // Strip HTML tags from description
   const stripHtml = (html: string) => {
     return html.replace(/<[^>]*>/g, '').trim();
   };
 
   return (
-    <footer className="border-t border-border bg-card mt-auto">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Brand */}
+    <footer className="mt-auto border-t border-steel/70 bg-void/95">
+      <div className="mx-auto max-w-[1600px] px-6 py-10">
+
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.3fr_0.7fr]">
+
+          {/* BRAND */}
+
           <div>
-            <h3 className="text-lg font-bold mb-2">{store?.title || 'Duster Theme'}</h3>
-            <p className="text-sm text-muted">
-              {store?.description ? stripHtml(store.description) : 'Premium gaming products and services'}
+            <div className="flex items-center gap-3">
+              <div className="h-8 w-1 rounded-full bg-salt-orange" />
+
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.25em] text-salt-orange-bright">
+                  Official #SALT Webshop
+                </p>
+
+                <h3 className="mt-1 font-black uppercase tracking-wide text-white">
+                  #SALT NO-WIPE
+                </h3>
+              </div>
+            </div>
+
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-500">
+              {store?.description
+                ? stripHtml(store.description)
+                : 'Official #SALT NO-WIPE ARK: Survival Ascended webshop.'}
             </p>
           </div>
 
-          {/* Quick Links */}
-          <div className="md:ml-auto">
-            <h3 className="text-sm font-semibold mb-3">Quick Links</h3>
-            <div className="grid grid-cols-2 gap-x-12 gap-y-2">
-              <Link href="/" className="text-sm text-muted hover:text-foreground transition-colors text-left">
+          {/* QUICK LINKS */}
+
+          <div className="lg:ml-auto">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">
+              Quick Links
+            </p>
+
+            <div className="mt-4 grid grid-cols-2 gap-x-10 gap-y-3">
+              <FooterLink href="/">
                 Home
-              </Link>
-              <Link href="/shop" className="text-sm text-muted hover:text-foreground transition-colors text-left">
+              </FooterLink>
+
+              <FooterLink href="/shop">
                 Shop
-              </Link>
-              <Link href="/cart" className="text-sm text-muted hover:text-foreground transition-colors text-left">
+              </FooterLink>
+
+              <FooterLink href="/cart">
                 Cart
-              </Link>
+              </FooterLink>
+
               {store?.menu_links?.map((menuLink, index) => (
                 <a
                   key={index}
                   href={menuLink.link.trim()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-muted hover:text-foreground transition-colors text-left"
+                  className="text-xs font-bold uppercase tracking-wider text-neutral-500 transition-colors hover:text-salt-orange-bright"
                 >
                   {menuLink.title}
                 </a>
@@ -60,117 +92,149 @@ export function Footer({ initialStore }: FooterProps) {
           </div>
         </div>
 
-        {/* Social Media Links */}
-        {store?.social_medias && (
-          <div className="mt-8 pt-8 border-t border-border">
-            <h3 className="text-sm font-semibold mb-4 text-center">Follow Us</h3>
-            <div className="flex justify-center gap-4 flex-wrap">
-              {store.social_medias.facebook && (
-                <a
-                  href={store.social_medias.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-primary transition-colors"
-                  aria-label="Facebook"
-                >
-                  <FaFacebook className="w-5 h-5" />
-                </a>
-              )}
-              {store.social_medias.instagram && (
-                <a
-                  href={store.social_medias.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-primary transition-colors"
-                  aria-label="Instagram"
-                >
-                  <FaInstagram className="w-5 h-5" />
-                </a>
-              )}
-              {store.social_medias.twitter && (
-                <a
-                  href={store.social_medias.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-primary transition-colors"
-                  aria-label="X"
-                >
-                  <SiX className="w-5 h-5" />
-                </a>
-              )}
-              {store.social_medias.youtube && (
-                <a
-                  href={store.social_medias.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-primary transition-colors"
-                  aria-label="YouTube"
-                >
-                  <FaYoutube className="w-5 h-5" />
-                </a>
-              )}
-              {store.social_medias.tiktok && (
-                <a
-                  href={store.social_medias.tiktok}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-primary transition-colors"
-                  aria-label="TikTok"
-                >
-                  <FaTiktok className="w-5 h-5" />
-                </a>
-              )}
-              {store.social_medias.discord && (
-                <a
-                  href={store.social_medias.discord}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-primary transition-colors"
-                  aria-label="Discord"
-                >
-                  <FaDiscord className="w-5 h-5" />
-                </a>
-              )}
-              {store.social_medias.twitch && (
-                <a
-                  href={store.social_medias.twitch}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-primary transition-colors"
-                  aria-label="Twitch"
-                >
-                  <FaTwitch className="w-5 h-5" />
-                </a>
-              )}
-              {store.social_medias.steam && (
-                <a
-                  href={store.social_medias.steam}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-primary transition-colors"
-                  aria-label="Steam"
-                >
-                  <FaSteam className="w-5 h-5" />
-                </a>
-              )}
+        {/* SOCIALS */}
+
+        {store?.social_medias ? (
+          <div className="mt-10 border-t border-steel/60 pt-7">
+
+            <div className="flex flex-wrap items-center justify-between gap-5">
+
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">
+                Follow #SALT
+              </p>
+
+              <div className="flex flex-wrap gap-2">
+
+                {store.social_medias.facebook ? (
+                  <SocialLink
+                    href={store.social_medias.facebook}
+                    label="Facebook"
+                  >
+                    <FaFacebook className="h-4 w-4" />
+                  </SocialLink>
+                ) : null}
+
+                {store.social_medias.instagram ? (
+                  <SocialLink
+                    href={store.social_medias.instagram}
+                    label="Instagram"
+                  >
+                    <FaInstagram className="h-4 w-4" />
+                  </SocialLink>
+                ) : null}
+
+                {store.social_medias.twitter ? (
+                  <SocialLink
+                    href={store.social_medias.twitter}
+                    label="X"
+                  >
+                    <SiX className="h-4 w-4" />
+                  </SocialLink>
+                ) : null}
+
+                {store.social_medias.youtube ? (
+                  <SocialLink
+                    href={store.social_medias.youtube}
+                    label="YouTube"
+                  >
+                    <FaYoutube className="h-4 w-4" />
+                  </SocialLink>
+                ) : null}
+
+                {store.social_medias.tiktok ? (
+                  <SocialLink
+                    href={store.social_medias.tiktok}
+                    label="TikTok"
+                  >
+                    <FaTiktok className="h-4 w-4" />
+                  </SocialLink>
+                ) : null}
+
+                {store.social_medias.discord ? (
+                  <SocialLink
+                    href={store.social_medias.discord}
+                    label="Discord"
+                  >
+                    <FaDiscord className="h-4 w-4" />
+                  </SocialLink>
+                ) : null}
+
+                {store.social_medias.twitch ? (
+                  <SocialLink
+                    href={store.social_medias.twitch}
+                    label="Twitch"
+                  >
+                    <FaTwitch className="h-4 w-4" />
+                  </SocialLink>
+                ) : null}
+
+                {store.social_medias.steam ? (
+                  <SocialLink
+                    href={store.social_medias.steam}
+                    label="Steam"
+                  >
+                    <FaSteam className="h-4 w-4" />
+                  </SocialLink>
+                ) : null}
+
+              </div>
             </div>
           </div>
-        )}
+        ) : null}
 
-        <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted">
-          <p>&copy; {currentYear} {store?.title || 'Duster Theme'}. Powered by Tip4Serv API.</p>
-          <p className="mt-2">
-            <a
-              href="https://github.com/Tip4Serv/duster-theme"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-foreground transition-colors"
-            >
-              Source Code
-            </a>
+        {/* BOTTOM BAR */}
+
+        <div className="mt-8 flex flex-col gap-3 border-t border-steel/60 pt-6 text-xs text-neutral-600 sm:flex-row sm:items-center sm:justify-between">
+
+          <p>
+            © {currentYear} #SALT NO-WIPE. All rights reserved.
           </p>
+
+          <p>
+            Store services powered by Tip4Serv.
+          </p>
+
         </div>
       </div>
     </footer>
+  );
+}
+
+function FooterLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className="text-xs font-bold uppercase tracking-wider text-neutral-500 transition-colors hover:text-salt-orange-bright"
+    >
+      {children}
+    </Link>
+  );
+}
+
+function SocialLink({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="flex h-9 w-9 items-center justify-center rounded-md border border-steel-light bg-charcoal text-neutral-500 transition-all hover:border-salt-orange/60 hover:bg-salt-orange/10 hover:text-salt-orange-bright"
+    >
+      {children}
+    </a>
   );
 }
