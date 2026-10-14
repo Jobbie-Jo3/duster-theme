@@ -92,37 +92,17 @@ export function Header({ initialStore }: HeaderProps) {
       <div className="mx-auto max-w-[1600px] px-6">
         <div className="flex min-h-[74px] items-center justify-between gap-3 py-2">
 
-          {/* BRAND */}
-
-          <Link
-            href="/"
-            className="group flex min-w-0 items-center gap-2.5"
-          >
-            {store?.logo ? (
-              <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-sm border border-salt-orange/30 bg-charcoal">
-                <Image
-                  src={store.logo}
-                  alt={store.title || '#SALT'}
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              </div>
-            ) : (
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm border border-salt-orange/30 bg-salt-orange/10 font-display text-lg font-black text-salt-orange-bright">
-                #
-              </div>
-            )}
-
-            <div className="flex items-baseline gap-1.5">
-              <span className="font-display text-lg font-black uppercase tracking-wide text-salt-orange-bright">
-                #SALT
-              </span>
-
-              <span className="font-display text-lg font-black uppercase tracking-wide text-white">
-                NO-WIPE
-              </span>
-            </div>
+          {/* BRAND — custom #SALT NO-WIPE artwork */}
+          <Link href="/" className="group flex shrink-0 items-center" aria-label="#SALT NO-WIPE home">
+            <Image
+              src="/salt-nav/SALT_NO_WIPE.webp"
+              alt="#SALT NO-WIPE"
+              width={2048}
+              height={682}
+              className="h-auto w-[155px] sm:w-[175px] xl:w-[195px] object-contain transition-[filter] duration-200 group-hover:brightness-125"
+              unoptimized
+              priority
+            />
           </Link>
 
           {/* DESKTOP NAV — custom supplied #SALT artwork */}
