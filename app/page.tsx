@@ -3,14 +3,14 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Users } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const STORAGE_KEY = "salt-selected-cluster-v1";
 
 const clusters = [
   { id: "2man", name: "2-MAN", subtitle: "Duos Cluster", active: false },
-  { id: "4man", name: "4-MAN", subtitle: "Four Player Cluster", active: false },
-  { id: "6man", name: "6-MAN", subtitle: "Original #SALT Cluster", active: true },
+  { id: "4man", name: "4-MAN", subtitle: "4-Man Cluster", active: false },
+  { id: "6man", name: "6-MAN", subtitle: "6-Man Cluster", active: true },
 ];
 
 export default function HomePage() {
@@ -48,7 +48,7 @@ export default function HomePage() {
       </h1>
 
       <p className="text-neutral-400">
-        Your selected cluster is the original #SALT 6-Man shop.
+        Your selected cluster is the #SALT 6-Man shop.
       </p>
 
       <button
@@ -91,57 +91,37 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen px-6 py-20 salt-cluster-background salt-bg-selector salt-selector-screen">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-14 text-center">
-          <p className="font-display text-sm font-bold uppercase tracking-widest text-salt-orange-bright">
-            #SALT NO-WIPE
-          </p>
+    <main className="salt-cluster-background salt-bg-selector salt-selector-screen salt-selector-bottom-layout">
+      <div className="salt-selector-top-label">
+        <span>#SALT NO-WIPE</span>
+        <h1>CHOOSE YOUR CLUSTER</h1>
+      </div>
 
-          <h1 className="mt-4 font-display text-4xl font-black uppercase text-white sm:text-6xl">
-            Choose Your Cluster
-          </h1>
-
-          <p className="mt-5 text-neutral-400">
-            Select the ARK: Survival Ascended cluster you want to shop for.
-            Your choice will be remembered.
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-3">
+      <section className="salt-selector-bottom-bar" aria-label="Choose your #SALT cluster">
+        <div className="salt-selector-bottom-inner">
           {clusters.map((cluster) => (
-            <div
+            <button
               key={cluster.id}
-              className="flex flex-col rounded-lg border border-steel bg-charcoal p-8"
+              type="button"
+              onClick={() => chooseCluster(cluster.id)}
+              className="salt-selector-cluster-button"
+              aria-label={`Select ${cluster.name} cluster`}
             >
-              <Users className="mb-7 h-10 w-10 text-salt-orange-bright" />
-
-              <h2 className="font-display text-4xl font-black text-white">
-                {cluster.name}
-              </h2>
-
-              <p className="mt-3 flex-1 text-neutral-400">
-                {cluster.subtitle}
-              </p>
-
-              <button
-                onClick={() => chooseCluster(cluster.id)}
-                className="salt-button mt-8 flex items-center justify-center gap-2"
-              >
-                {cluster.active ? "Enter Shop" : "View Cluster"}
-                <ArrowRight className="h-4 w-4" />
-              </button>
-
-              {!cluster.active && (
-                <p className="mt-4 text-center text-xs text-neutral-500">
-                  Purchases currently disabled
-                </p>
-              )}
-            </div>
+              <span className="salt-selector-cluster-copy">
+                <span className="salt-selector-cluster-name">{cluster.name}</span>
+                <span className="salt-selector-cluster-subtitle">{cluster.subtitle}</span>
+                <span className="salt-selector-cluster-status">
+                  {cluster.active ? "SHOP AVAILABLE" : "BROWSE ONLY · CHECKOUT DISABLED"}
+                </span>
+              </span>
+              <span className="salt-selector-cluster-action">
+                {cluster.active ? "ENTER SHOP" : "VIEW CLUSTER"}
+                <ArrowRight size={17} aria-hidden="true" />
+              </span>
+            </button>
           ))}
         </div>
-      </div>
+      </section>
     </main>
   );
 }
-
