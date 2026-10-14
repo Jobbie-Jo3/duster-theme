@@ -32,7 +32,7 @@ function menuArtwork(title: string, index: number): string | undefined {
 
 function NavigationArtwork({ src, label, mobile = false }: { src: string; label: string; mobile?: boolean }) {
   return (
-    <span className={`relative block shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:brightness-125 ${mobile ? 'w-[170px]' : 'w-[124px] xl:w-[145px]'}`}>
+    <span className={`relative block shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:brightness-125 ${mobile ? 'w-full max-w-[185px]' : 'w-[124px] xl:w-[145px]'}`}>
       <Image src={src} alt={label} width={2132} height={800} className="h-auto w-full object-contain" unoptimized />
     </span>
   );
@@ -139,8 +139,9 @@ export function Header({ initialStore }: HeaderProps) {
           <button
             type="button"
             onClick={() => setMobileMenuOpen((value) => !value)}
-            className="flex h-9 w-9 items-center justify-center rounded-sm border border-steel-light bg-charcoal text-neutral-300 transition-colors hover:border-salt-orange/50 hover:text-white lg:hidden"
-            aria-label="Toggle navigation"
+            className="flex h-11 w-11 items-center justify-center rounded-md border border-[#FA4900]/60 bg-[#0a0a0a] text-white transition-colors hover:border-[#FA4900] hover:bg-[#181818] lg:hidden"
+            aria-label={mobileMenuOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? (
               <X className="h-4 w-4" />
@@ -150,92 +151,39 @@ export function Header({ initialStore }: HeaderProps) {
           </button>
         </div>
 
-        {/* MOBILE NAV */}
-
+        {/* MOBILE NAV — compact artwork grid, no brown active-state boxes */}
         <AnimatePresence>
-          {mobileMenuOpen ? (
+          {mobileMenuOpen && (
             <motion.nav
-              initial={{
-                opacity: 0,
-                height: 0,
-              }}
-              animate={{
-                opacity: 1,
-                height: 'auto',
-              }}
-              exit={{
-                opacity: 0,
-                height: 0,
-              }}
-              className="overflow-hidden border-t border-steel/60 lg:hidden"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden border-t border-[#FA4900]/30 lg:hidden"
+              aria-label="Mobile navigation"
             >
-              <div className="space-y-1 py-3">
-
-                <Link
-                  href="/"
-                  onClick={() => {
-                    localStorage.removeItem('salt-selected-cluster-v1');
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`block rounded-sm px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider ${
-                    isActive('/')
-                      ? 'bg-salt-orange/10 text-salt-orange-bright'
-                      : 'text-neutral-400 hover:bg-charcoal hover:text-white'
-                  }`}
-                >
-                  <span className="group inline-block"><NavigationArtwork src="/salt-nav/SALT_SWITCH_CLUSTER.webp" label="Switch Cluster" mobile /></span>
+              <div className="grid grid-cols-2 gap-x-3 gap-y-3 bg-[#080808] px-1 py-5 sm:grid-cols-3">
+                <Link href="/" onClick={() => { localStorage.removeItem('salt-selected-cluster-v1'); setMobileMenuOpen(false); }} className="group flex min-w-0 items-center justify-center rounded-md border border-transparent bg-transparent p-1 transition-colors hover:border-[#FA4900]/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#FA4900]" aria-label="Switch Cluster">
+                  <NavigationArtwork src="/salt-nav/SALT_SWITCH_CLUSTER.webp" label="Switch Cluster" mobile />
                 </Link>
-
-                <Link
-                  href="/shop"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`block rounded-sm px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider ${
-                    isActive('/shop') || isActive('/product')
-                      ? 'bg-salt-orange/10 text-salt-orange-bright'
-                      : 'text-neutral-400 hover:bg-charcoal hover:text-white'
-                  }`}
-                >
-                  <span className="group inline-block"><NavigationArtwork src="/salt-nav/SALT_SHOP.webp" label="Shop" mobile /></span>
+                <Link href="/shop" onClick={() => setMobileMenuOpen(false)} className="group flex min-w-0 items-center justify-center rounded-md border border-transparent bg-transparent p-1 transition-colors hover:border-[#FA4900]/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#FA4900]" aria-label="Shop">
+                  <NavigationArtwork src="/salt-nav/SALT_SHOP.webp" label="Shop" mobile />
                 </Link>
-
-                {store?.menu_links?.map((menuLink, index) => (
-                  <a
-                    key={index}
-                    href={menuLink.link.trim()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block rounded-sm px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-neutral-400 hover:bg-charcoal hover:text-white"
-                  >
-                    {menuArtwork(menuLink.title, index) ? (
-                      <span className="group inline-block"><NavigationArtwork src={menuArtwork(menuLink.title, index)!} label={menuLink.title} mobile /></span>
-                    ) : menuLink.title}
-                  </a>
-                ))}
-
-                <Link
-                  href="/cart"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between rounded-sm border px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider ${
-                    isActive('/cart') || isActive('/checkout')
-                      ? 'border-salt-orange bg-salt-orange text-black'
-                      : 'border-salt-orange/40 bg-charcoal text-salt-orange-bright'
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="group inline-block"><NavigationArtwork src="/salt-nav/SALT_CART.webp" label="Cart" mobile /></span>
-                  </div>
-
-                  {mounted && cartItemCount > 0 ? (
-                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-salt-orange px-1 text-[9px] font-black text-black">
-                      {cartItemCount}
-                    </span>
-                  ) : null}
+                {store?.menu_links?.map((menuLink, index) => {
+                  const artwork = menuArtwork(menuLink.title, index);
+                  return (
+                    <a key={index} href={menuLink.link.trim()} target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="group flex min-w-0 items-center justify-center rounded-md border border-transparent bg-transparent p-1 transition-colors hover:border-[#FA4900]/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#FA4900]" aria-label={menuLink.title}>
+                      {artwork ? <NavigationArtwork src={artwork} label={menuLink.title} mobile /> : <span className="text-center text-xs font-bold uppercase text-white">{menuLink.title}</span>}
+                    </a>
+                  );
+                })}
+                <Link href="/cart" onClick={() => setMobileMenuOpen(false)} className="group relative flex min-w-0 items-center justify-center rounded-md border border-transparent bg-transparent p-1 transition-colors hover:border-[#FA4900]/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#FA4900]" aria-label="Cart">
+                  <NavigationArtwork src="/salt-nav/SALT_CART.webp" label="Cart" mobile />
+                  {mounted && cartItemCount > 0 && <span className="absolute right-0 top-0 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#FA4900] px-1 text-[10px] font-black text-black">{cartItemCount}</span>}
                 </Link>
-
               </div>
             </motion.nav>
-          ) : null}
+          )}
         </AnimatePresence>
       </div>
     </header>
