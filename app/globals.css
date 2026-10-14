@@ -422,19 +422,30 @@ textarea:focus {
   .salt-shop-redesign .salt-tek-product-card { border-radius: 5px; }
 }
 
-/* Cluster selection: separate artwork, shown only as a bounded top banner. */
+/* #SALT Switch Cluster: full artwork, no banner crop.
+   The image scales to the screen width at its original aspect ratio. */
 .salt-selector-screen { background: #090909; }
 .salt-selector-screen.salt-cluster-background::before {
-  position: absolute; inset: 0 0 auto; height: clamp(220px, 27vw, 390px);
-  background-size: cover; background-position: center 55%;
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  background-size: 100% auto;
+  background-position: center top;
+  background-repeat: no-repeat;
 }
 .salt-selector-screen.salt-cluster-background::after {
-  position: absolute; inset: 0 0 auto; height: clamp(220px, 27vw, 390px);
-  background: linear-gradient(180deg, rgba(5,5,5,.48), rgba(5,5,5,.67) 65%, #090909);
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(5,5,5,.28) 0%, rgba(5,5,5,.40) 35%, rgba(5,5,5,.72) 75%, #090909 100%);
 }
 .salt-selector-screen > div { position: relative; z-index: 1; }
 @media (max-width: 640px) {
-  .salt-selector-screen.salt-cluster-background::before,
-  .salt-selector-screen.salt-cluster-background::after { height: 250px; }
-  .salt-selector-screen.salt-cluster-background::before { background-position: center top; }
+  .salt-selector-screen.salt-cluster-background::before {
+    background-size: 100% auto;
+    background-position: center top;
+  }
+  .salt-selector-screen.salt-cluster-background::after {
+    background: linear-gradient(180deg, rgba(5,5,5,.35), rgba(5,5,5,.70) 50%, #090909 100%);
+  }
 }
