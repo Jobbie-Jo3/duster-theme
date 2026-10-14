@@ -19,6 +19,14 @@ const NAV_ART: Record<string, string> = {
   tos: '/salt-nav/SALT_TERMS_OF_SERVICE.webp',
 };
 
+function getNavArtwork(title: string): string | undefined {
+  const normalized = title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  if (normalized.includes('discord')) return NAV_ART.discord;
+  if (normalized.includes('support') || normalized.includes('help')) return NAV_ART.support;
+  if (normalized.includes('terms') || normalized.includes('tos')) return NAV_ART.terms;
+  return NAV_ART[normalized];
+}
+
 function NavigationArtwork({ src, label, mobile = false }: { src: string; label: string; mobile?: boolean }) {
   return (
     <span className={`relative block shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:brightness-125 ${mobile ? 'w-[170px]' : 'w-[124px] xl:w-[145px]'}`}>
@@ -124,7 +132,7 @@ export function Header({ initialStore }: HeaderProps) {
             </Link>
             {store?.menu_links?.map((menuLink, index) => {
               const title = menuLink.title.trim();
-              const artwork = NAV_ART[title.toLowerCase()];
+              const artwork = getNavArtwork(title);
               return (
                 <a key={index} href={menuLink.link.trim()} target="_blank" rel="noopener noreferrer" className="group rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-salt-orange" aria-label={title}>
                   {artwork ? <NavigationArtwork src={artwork} label={title} /> : <span className="px-2 text-xs font-bold uppercase tracking-wide text-neutral-300 hover:text-salt-orange-bright">{title}</span>}
@@ -216,8 +224,8 @@ export function Header({ initialStore }: HeaderProps) {
                     onClick={() => setMobileMenuOpen(false)}
                     className="block rounded-sm px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-neutral-400 hover:bg-charcoal hover:text-white"
                   >
-                    {NAV_ART[menuLink.title.trim().toLowerCase()] ? (
-                      <span className="group inline-block"><NavigationArtwork src={NAV_ART[menuLink.title.trim().toLowerCase()]} label={menuLink.title} mobile /></span>
+                    {getNavArtwork(menuLink.title) ? (
+                      <span className="group inline-block"><NavigationArtwork src={getNavArtwork(menuLink.title)!} label={menuLink.title} mobile /></span>
                     ) : menuLink.title}
                   </a>
                 ))}
