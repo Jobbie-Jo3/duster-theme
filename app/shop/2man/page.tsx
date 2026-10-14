@@ -63,7 +63,7 @@ export default function TwoManShopPage() {
           <h1 className="mt-2 font-display text-4xl font-extrabold uppercase tracking-tight text-white sm:text-5xl">2-Man Shop</h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-neutral-400">Points, VIP and loot boxes for the #SALT Duos cluster.</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/" className="salt-button-outline inline-flex items-center gap-2"><ArrowLeft className="h-4 w-4" /> Switch Cluster</Link>
+            <Link href="/" onClick={() => localStorage.removeItem("salt-selected-cluster-v1")} className="salt-button-outline inline-flex items-center gap-2"><ArrowLeft className="h-4 w-4" /> Switch Cluster</Link>
             <span className="inline-flex items-center gap-2 rounded-sm border border-steel bg-charcoal px-4 py-2 text-xs font-bold uppercase text-neutral-300"><ShieldAlert className="h-4 w-4 text-salt-orange-bright" /> Testing — Checkout Disabled</span>
           </div>
         </div>

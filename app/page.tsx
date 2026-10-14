@@ -81,18 +81,11 @@ export default function HomePage() {
 
   if (selected === "4man") {
     return (
-      <main className="min-h-screen px-6 py-24 text-center">
-        <p className="text-salt-orange-bright font-bold">#SALT WEBSHOP</p>
-        <h1 className="mt-4 text-5xl font-black text-white">
-          4-MAN SHOP
-        </h1>
-        <p className="mt-6 text-neutral-400">
-          This cluster's products and checkout are being configured.
-          Purchases are not available yet.
-        </p>
-        <button onClick={switchCluster} className="salt-button mt-10">
-          Switch Cluster
-        </button>
+      <main className="min-h-screen flex flex-col items-center justify-center gap-6 px-6 text-center">
+        <h1 className="font-display text-4xl font-black uppercase text-white">4-Man Cluster Selected</h1>
+        <p className="text-neutral-400">Browse the #SALT 4-Man catalogue. Purchasing remains disabled during testing.</p>
+        <button onClick={() => router.push("/shop/4man")} className="salt-button">Enter 4-Man Shop</button>
+        <button onClick={switchCluster} className="salt-button-outline">Switch Cluster</button>
       </main>
     );
   }
