@@ -44,10 +44,7 @@ export default function HomePage() {
     setLoaded(true);
   }, []);
 
-  // Automatically open the 2-Man catalogue when remembered.
-  useEffect(() => {
-    if (loaded && selected === "2man") {
-      router.replace("/shop/2man");
+  
     }
   }, [loaded, selected, router]);
 
@@ -55,9 +52,7 @@ export default function HomePage() {
     localStorage.setItem(STORAGE_KEY, id);
     setSelected(id);
 
-    if (id === "2man") {
-      router.push("/shop/2man");
-    }
+    
   }
 
   function switchCluster() {
