@@ -12,22 +12,28 @@ const cleanName = (name: string) => name.replace(/\s*\(\s*2\s*[- ]?\s*man\s*\)/i
 
 type Tab = "all" | "points" | "vip" | "loot" | "other";
 function productGroup(product: ProductGeneral, categories: Category[]): Exclude<Tab, "all"> {
-  const category = typeof product.category === "number"
-    ? categories.find((c) => c.id === product.category)
+  // Tip4Serv can return a numeric category ID, an object, or null.
+  const categoryRecord = typeof product.category === "number"
+    ? categories.find((entry) => Number(entry.id) === product.category)
     : product.category;
-  const categoryName = category?.name?.toLowerCase().trim() ?? "";
-  const productName = product.name.toLowerCase();
+  const categoryName = categoryRecord?.name ?? "";
+  const title = product.name ?? "";
 
-  // Prefer the actual Tip4Serv category when it identifies one of our tabs.
-  // Some disabled products have no usable category name in the products response,
-  // so fall back to the product title instead of placing every pack in Other.
-  const classify = (value: string): Exclude<Tab, "all"> | null => {
-    if (/\b(vip|rank|subscription|membership|donator|donor)\b/i.test(value)) return "vip";
-    if (/\b(loot\s*box(?:es)?|lootbox(?:es)?|loot\s*crate(?:s)?|crate(?:s)?|case(?:s)?)\b/i.test(value)) return "loot";
-    if (/\b(point(?:s)?|credit(?:s)?|currency|coin(?:s)?)\b/i.test(value)) return "points";
+  // Cluster suffixes select the shop. The product title identifies the pack
+  // even when Tip4Serv returns no category for a disabled product.
+  const identify = (value: string): Exclude<Tab, "all"> | null => {
+    const normalized = value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    if (normalized.includes("loot box") || normalized.includes("loot crate") ||
+        normalized.includes("lootbox") || normalized.includes("loot crate") ||
+        normalized.includes("lootbox") || normalized.includes("lootboxes")) return "loot";
+    if (normalized.includes("vip") || normalized.includes("membership") ||
+        normalized.includes("donator") || normalized.includes("donor") ||
+        normalized.includes("subscription") || normalized.includes("rank")) return "vip";
+    if (normalized.includes("point") || normalized.includes("credit") ||
+        normalized.includes("coin") || normalized.includes("currency")) return "points";
     return null;
   };
-  return classify(categoryName) ?? classify(productName) ?? "other";
+  return identify(title) ?? identify(categoryName) ?? "other";
 }
 
 function PreviewCard({ product }: { product: ProductGeneral }) {
