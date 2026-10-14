@@ -16,11 +16,18 @@ function productGroup(product: ProductGeneral, categories: Category[]): Exclude<
     ? categories.find((c) => c.id === product.category)
     : product.category;
   const categoryName = category?.name?.toLowerCase().trim() ?? "";
-  // Tip4Serv category is authoritative; product name only identifies the cluster.
-  if (/vip|rank|subscription|membership/.test(categoryName)) return "vip";
-  if (/loot|box|crate|case/.test(categoryName)) return "loot";
-  if (/point|credit|currency|coin/.test(categoryName)) return "points";
-  return "other";
+  const productName = product.name.toLowerCase();
+
+  // Prefer the actual Tip4Serv category when it identifies one of our tabs.
+  // Some disabled products have no usable category name in the products response,
+  // so fall back to the product title instead of placing every pack in Other.
+  const classify = (value: string): Exclude<Tab, "all"> | null => {
+    if (/\b(vip|rank|subscription|membership|donator|donor)\b/i.test(value)) return "vip";
+    if (/\b(loot\s*box(?:es)?|lootbox(?:es)?|loot\s*crate(?:s)?|crate(?:s)?|case(?:s)?)\b/i.test(value)) return "loot";
+    if (/\b(point(?:s)?|credit(?:s)?|currency|coin(?:s)?)\b/i.test(value)) return "points";
+    return null;
+  };
+  return classify(categoryName) ?? classify(productName) ?? "other";
 }
 
 function PreviewCard({ product }: { product: ProductGeneral }) {
