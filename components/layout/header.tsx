@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, ShoppingCart } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
@@ -10,6 +10,22 @@ import { useEffect, useState } from 'react';
 import { useStore } from '@/hooks/use-api';
 import { useCart } from '@/hooks/use-cart';
 import type { Store } from '@/lib/schemas';
+
+const NAV_ART: Record<string, string> = {
+  discord: '/salt-nav/SALT_DISCORD.webp',
+  support: '/salt-nav/SALT_SUPPORT.webp',
+  'terms of service': '/salt-nav/SALT_TERMS_OF_SERVICE.webp',
+  terms: '/salt-nav/SALT_TERMS_OF_SERVICE.webp',
+  tos: '/salt-nav/SALT_TERMS_OF_SERVICE.webp',
+};
+
+function NavigationArtwork({ src, label, mobile = false }: { src: string; label: string; mobile?: boolean }) {
+  return (
+    <span className={`relative block shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:brightness-125 ${mobile ? 'w-[170px]' : 'w-[124px] xl:w-[145px]'}`}>
+      <Image src={src} alt={label} width={2132} height={800} className="h-auto w-full object-contain" unoptimized />
+    </span>
+  );
+}
 
 interface HeaderProps {
   initialStore?: Store | null;
@@ -63,7 +79,7 @@ export function Header({ initialStore }: HeaderProps) {
       <div className="h-[2px] w-full bg-salt-orange" />
 
       <div className="mx-auto max-w-[1600px] px-6">
-        <div className="flex h-[58px] items-center justify-between gap-6">
+        <div className="flex min-h-[74px] items-center justify-between gap-3 py-2">
 
           {/* BRAND */}
 
@@ -98,79 +114,33 @@ export function Header({ initialStore }: HeaderProps) {
             </div>
           </Link>
 
-          {/* DESKTOP NAV */}
-
-          <nav className="hidden items-center gap-1 lg:flex">
-
-            <Link
-              href="/"
-              className={`rounded-sm px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wider transition-colors ${
-                isActive('/')
-                  ? 'text-salt-orange-bright'
-                  : 'text-neutral-400 hover:text-white'
-              }`}
-            >
-              Home
+          {/* DESKTOP NAV — custom supplied #SALT artwork */}
+          <nav className="hidden items-center gap-0 xl:gap-1 lg:flex" aria-label="Main navigation">
+            <Link href="/" onClick={() => localStorage.removeItem('salt-selected-cluster-v1')} className="group rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-salt-orange" aria-label="Switch Cluster" aria-current={isActive('/') ? 'page' : undefined}>
+              <NavigationArtwork src="/salt-nav/SALT_SWITCH_CLUSTER.webp" label="Switch Cluster" />
             </Link>
-
-            <Link
-              href="/shop"
-              className={`rounded-sm px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wider transition-colors ${
-                isActive('/shop') || isActive('/product')
-                  ? 'text-salt-orange-bright'
-                  : 'text-neutral-400 hover:text-white'
-              }`}
-            >
-              Shop
+            <Link href="/shop" className="group rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-salt-orange" aria-label="Shop" aria-current={isActive('/shop') ? 'page' : undefined}>
+              <NavigationArtwork src="/salt-nav/SALT_SHOP.webp" label="Shop" />
             </Link>
-
-            {store?.menu_links?.map((menuLink, index) => (
-              <a
-                key={index}
-                href={menuLink.link.trim()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-sm px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wider text-neutral-400 transition-colors hover:text-white"
-              >
-                {menuLink.title}
-              </a>
-            ))}
-
-            {/* CART */}
-
-            <Link
-              href="/cart"
-              className="relative ml-2"
-            >
-              <div
-                className={`flex items-center gap-2 rounded-sm border px-3.5 py-2 font-display text-[11px] font-bold uppercase tracking-wider transition-all ${
-                  isActive('/cart') || isActive('/checkout')
-                    ? 'border-salt-orange bg-salt-orange text-black'
-                    : 'border-salt-orange/50 bg-charcoal text-salt-orange-bright hover:border-salt-orange hover:bg-salt-orange/10'
-                }`}
-              >
-                <ShoppingCart className="h-3.5 w-3.5" />
-                Cart
-              </div>
-
+            {store?.menu_links?.map((menuLink, index) => {
+              const title = menuLink.title.trim();
+              const artwork = NAV_ART[title.toLowerCase()];
+              return (
+                <a key={index} href={menuLink.link.trim()} target="_blank" rel="noopener noreferrer" className="group rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-salt-orange" aria-label={title}>
+                  {artwork ? <NavigationArtwork src={artwork} label={title} /> : <span className="px-2 text-xs font-bold uppercase tracking-wide text-neutral-300 hover:text-salt-orange-bright">{title}</span>}
+                </a>
+              );
+            })}
+            <Link href="/cart" className="group relative rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-salt-orange" aria-label="Cart" aria-current={isActive('/cart') || isActive('/checkout') ? 'page' : undefined}>
+              <NavigationArtwork src="/salt-nav/SALT_CART.webp" label="Cart" />
               <AnimatePresence>
                 {mounted && cartItemCount > 0 ? (
-                  <motion.span
-                    key={cartItemCount}
-                    initial={{ scale: 0 }}
-                    animate={{
-                      scale: animateCart ? [1, 1.4, 1] : 1,
-                    }}
-                    exit={{ scale: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-void bg-salt-orange px-1 text-[9px] font-black text-black"
-                  >
+                  <motion.span key={cartItemCount} initial={{ scale: 0 }} animate={{ scale: animateCart ? [1, 1.4, 1] : 1 }} exit={{ scale: 0 }} transition={{ duration: 0.3 }} className="absolute right-1 top-0 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-void bg-salt-orange px-1 text-[9px] font-black text-black">
                     {cartItemCount}
                   </motion.span>
                 ) : null}
               </AnimatePresence>
             </Link>
-
           </nav>
 
           {/* MOBILE BUTTON */}
@@ -212,14 +182,17 @@ export function Header({ initialStore }: HeaderProps) {
 
                 <Link
                   href="/"
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    localStorage.removeItem('salt-selected-cluster-v1');
+                    setMobileMenuOpen(false);
+                  }}
                   className={`block rounded-sm px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider ${
                     isActive('/')
                       ? 'bg-salt-orange/10 text-salt-orange-bright'
                       : 'text-neutral-400 hover:bg-charcoal hover:text-white'
                   }`}
                 >
-                  Home
+                  <span className="group inline-block"><NavigationArtwork src="/salt-nav/SALT_SWITCH_CLUSTER.webp" label="Switch Cluster" mobile /></span>
                 </Link>
 
                 <Link
@@ -231,7 +204,7 @@ export function Header({ initialStore }: HeaderProps) {
                       : 'text-neutral-400 hover:bg-charcoal hover:text-white'
                   }`}
                 >
-                  Shop
+                  <span className="group inline-block"><NavigationArtwork src="/salt-nav/SALT_SHOP.webp" label="Shop" mobile /></span>
                 </Link>
 
                 {store?.menu_links?.map((menuLink, index) => (
@@ -243,7 +216,9 @@ export function Header({ initialStore }: HeaderProps) {
                     onClick={() => setMobileMenuOpen(false)}
                     className="block rounded-sm px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-neutral-400 hover:bg-charcoal hover:text-white"
                   >
-                    {menuLink.title}
+                    {NAV_ART[menuLink.title.trim().toLowerCase()] ? (
+                      <span className="group inline-block"><NavigationArtwork src={NAV_ART[menuLink.title.trim().toLowerCase()]} label={menuLink.title} mobile /></span>
+                    ) : menuLink.title}
                   </a>
                 ))}
 
@@ -257,8 +232,7 @@ export function Header({ initialStore }: HeaderProps) {
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <ShoppingCart className="h-4 w-4" />
-                    Cart
+                    <span className="group inline-block"><NavigationArtwork src="/salt-nav/SALT_CART.webp" label="Cart" mobile /></span>
                   </div>
 
                   {mounted && cartItemCount > 0 ? (
