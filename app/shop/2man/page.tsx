@@ -4,18 +4,23 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, Package, ShieldAlert, ArrowLeft, Zap } from "lucide-react";
-import { useProducts } from "@/hooks/use-api";
-import type { ProductGeneral } from "@/lib/schemas";
+import { useProducts, useCategories } from "@/hooks/use-api";
+import type { ProductGeneral, Category } from "@/lib/schemas";
 
 const isTwoMan = (name: string) => /\(\s*2\s*[- ]?\s*man\s*\)/i.test(name);
 const cleanName = (name: string) => name.replace(/\s*\(\s*2\s*[- ]?\s*man\s*\)/ig, "").trim();
 
-type Tab = "all" | "points" | "vip" | "loot";
-function productGroup(product: ProductGeneral): Exclude<Tab, "all"> {
-  const name = product.name.toLowerCase();
-  if (/vip|rank|subscription/.test(name)) return "vip";
-  if (/loot|box|crate/.test(name)) return "loot";
-  return "points";
+type Tab = "all" | "points" | "vip" | "loot" | "other";
+function productGroup(product: ProductGeneral, categories: Category[]): Exclude<Tab, "all"> {
+  const category = typeof product.category === "number"
+    ? categories.find((c) => c.id === product.category)
+    : product.category;
+  const categoryName = category?.name?.toLowerCase().trim() ?? "";
+  // Tip4Serv category is authoritative; product name only identifies the cluster.
+  if (/vip|rank|subscription|membership/.test(categoryName)) return "vip";
+  if (/loot|box|crate|case/.test(categoryName)) return "loot";
+  if (/point|credit|currency|coin/.test(categoryName)) return "points";
+  return "other";
 }
 
 function PreviewCard({ product }: { product: ProductGeneral }) {
@@ -49,11 +54,13 @@ export default function TwoManShopPage() {
   const [tab, setTab] = useState<Tab>("all");
   const [search, setSearch] = useState("");
   const { data, isLoading, error, refetch } = useProducts({ page: 1, maxPage: 100, onlyEnabled: false });
+  const { data: categoryData, isLoading: categoriesLoading } = useCategories({ page: 1, maxPage: 100 });
+  const categories = categoryData?.categories ?? [];
   const all = useMemo(() => (data?.products ?? []).filter((p) => isTwoMan(p.name)), [data]);
-  const filtered = all.filter((p) => (tab === "all" || productGroup(p) === tab) && cleanName(p.name).toLowerCase().includes(search.toLowerCase()));
+  const filtered = all.filter((p) => (tab === "all" || productGroup(p, categories) === tab) && cleanName(p.name).toLowerCase().includes(search.toLowerCase()));
   const tabs: { id: Tab; label: string }[] = [
     { id: "all", label: "All Products" }, { id: "points", label: "Points" },
-    { id: "vip", label: "VIP" }, { id: "loot", label: "Loot Boxes" },
+    { id: "vip", label: "VIP" }, { id: "loot", label: "Loot Boxes" }, { id: "other", label: "Other" },
   ];
   return (
     <main className="min-h-screen">
@@ -80,12 +87,12 @@ export default function TwoManShopPage() {
         </div>
         <div className="mb-6 mt-8 flex items-center justify-between">
           <h2 className="font-display text-2xl font-bold uppercase text-white">{tabs.find((item) => item.id === tab)?.label}</h2>
-          {!isLoading && !error && <span className="text-xs uppercase text-neutral-500">{filtered.length} Products</span>}
+          {!isLoading && !categoriesLoading && !error && <span className="text-xs uppercase text-neutral-500">{filtered.length} Products</span>}
         </div>
-        {isLoading && <p className="py-12 text-neutral-400">Loading 2-Man products...</p>}
+        {(isLoading || categoriesLoading) && <p className="py-12 text-neutral-400">Loading 2-Man products...</p>}
         {error && <div className="rounded-md border border-red-500/30 bg-red-950/10 p-6 text-red-400">Could not load products. <button onClick={() => refetch()} className="underline">Retry</button></div>}
-        {!isLoading && !error && filtered.length === 0 && <div className="texture-plate rounded-md border border-steel bg-charcoal py-20 text-center"><Package className="mx-auto h-12 w-12 text-neutral-600" /><p className="mt-5 text-neutral-400">No 2-Man products found in this category yet.</p></div>}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{filtered.map((product) => <PreviewCard key={product.id} product={product} />)}</div>
+        {!isLoading && !categoriesLoading && !error && filtered.length === 0 && <div className="texture-plate rounded-md border border-steel bg-charcoal py-20 text-center"><Package className="mx-auto h-12 w-12 text-neutral-600" /><p className="mt-5 text-neutral-400">No 2-Man products found in this category yet.</p></div>}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{!categoriesLoading && filtered.map((product) => <PreviewCard key={product.id} product={product} />)}</div>
       </section>
     </main>
   );
