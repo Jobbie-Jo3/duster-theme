@@ -4,36 +4,27 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, Package, ShieldAlert, ArrowLeft, Zap } from "lucide-react";
-import { useProducts, useCategories } from "@/hooks/use-api";
-import type { ProductGeneral, Category } from "@/lib/schemas";
+import { useProducts } from "@/hooks/use-api";
+import type { ProductGeneral } from "@/lib/schemas";
 
 const isFourMan = (name: string) => /\(\s*4\s*[- ]?\s*man\s*\)/i.test(name);
 const cleanName = (name: string) => name.replace(/\s*\(\s*4\s*[- ]?\s*man\s*\)/ig, "").trim();
 
 type Tab = "all" | "points" | "vip" | "loot" | "other";
-function productGroup(product: ProductGeneral, categories: Category[]): Exclude<Tab, "all"> {
-  // Tip4Serv can return a numeric category ID, an object, or null.
-  const categoryRecord = typeof product.category === "number"
-    ? categories.find((entry) => Number(entry.id) === product.category)
-    : product.category;
-  const categoryName = categoryRecord?.name ?? "";
-  const title = product.name ?? "";
+function productGroup(product: ProductGeneral): Exclude<Tab, "all"> {
+  // Tip4Serv product.category is a numeric ID, confirmed against the live API:
+  // 1 = Points, 2 = VIP, 3 = Loot Boxes.
+  const id = Number(product.category);
+  if (id === 1) return "points";
+  if (id === 2) return "vip";
+  if (id === 3) return "loot";
 
-  // Cluster suffixes select the shop. The product title identifies the pack
-  // even when Tip4Serv returns no category for a disabled product.
-  const identify = (value: string): Exclude<Tab, "all"> | null => {
-    const normalized = value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-    if (normalized.includes("loot box") || normalized.includes("loot crate") ||
-        normalized.includes("lootbox") || normalized.includes("loot crate") ||
-        normalized.includes("lootbox") || normalized.includes("lootboxes")) return "loot";
-    if (normalized.includes("vip") || normalized.includes("membership") ||
-        normalized.includes("donator") || normalized.includes("donor") ||
-        normalized.includes("subscription") || normalized.includes("rank")) return "vip";
-    if (normalized.includes("point") || normalized.includes("credit") ||
-        normalized.includes("coin") || normalized.includes("currency")) return "points";
-    return null;
-  };
-  return identify(title) ?? identify(categoryName) ?? "other";
+  // For future categories, support readable names and Unicode-styled product titles.
+  const name = product.name.normalize("NFKC").toLowerCase();
+  if (/\bvip\b|membership|subscription/.test(name)) return "vip";
+  if (/loot\s*box|lootbox|loot\s*crate/.test(name)) return "loot";
+  if (/\bpoints?\b|credits?/.test(name)) return "points";
+  return "other";
 }
 
 function PreviewCard({ product }: { product: ProductGeneral }) {
@@ -67,10 +58,8 @@ export default function FourManShopPage() {
   const [tab, setTab] = useState<Tab>("all");
   const [search, setSearch] = useState("");
   const { data, isLoading, error, refetch } = useProducts({ page: 1, maxPage: 100, onlyEnabled: false });
-  const { data: categoryData, isLoading: categoriesLoading } = useCategories({ page: 1, maxPage: 100 });
-  const categories = categoryData?.categories ?? [];
   const all = useMemo(() => (data?.products ?? []).filter((p) => isFourMan(p.name)), [data]);
-  const filtered = all.filter((p) => (tab === "all" || productGroup(p, categories) === tab) && cleanName(p.name).toLowerCase().includes(search.toLowerCase()));
+  const filtered = all.filter((p) => (tab === "all" || productGroup(p) === tab) && cleanName(p.name).toLowerCase().includes(search.toLowerCase()));
   const tabs: { id: Tab; label: string }[] = [
     { id: "all", label: "All Products" }, { id: "points", label: "Points" },
     { id: "vip", label: "VIP" }, { id: "loot", label: "Loot Boxes" }, { id: "other", label: "Other" },
@@ -100,12 +89,12 @@ export default function FourManShopPage() {
         </div>
         <div className="mb-6 mt-8 flex items-center justify-between">
           <h2 className="font-display text-2xl font-bold uppercase text-white">{tabs.find((item) => item.id === tab)?.label}</h2>
-          {!isLoading && !categoriesLoading && !error && <span className="text-xs uppercase text-neutral-500">{filtered.length} Products</span>}
+          {!isLoading && !error && <span className="text-xs uppercase text-neutral-500">{filtered.length} Products</span>}
         </div>
-        {(isLoading || categoriesLoading) && <p className="py-12 text-neutral-400">Loading 4-Man products...</p>}
+        {(isLoading) && <p className="py-12 text-neutral-400">Loading 4-Man products...</p>}
         {error && <div className="rounded-md border border-red-500/30 bg-red-950/10 p-6 text-red-400">Could not load products. <button onClick={() => refetch()} className="underline">Retry</button></div>}
-        {!isLoading && !categoriesLoading && !error && filtered.length === 0 && <div className="texture-plate rounded-md border border-steel bg-charcoal py-20 text-center"><Package className="mx-auto h-12 w-12 text-neutral-600" /><p className="mt-5 text-neutral-400">No 4-Man products found in this category yet.</p></div>}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{!categoriesLoading && filtered.map((product) => <PreviewCard key={product.id} product={product} />)}</div>
+        {!isLoading && !error && filtered.length === 0 && <div className="texture-plate rounded-md border border-steel bg-charcoal py-20 text-center"><Package className="mx-auto h-12 w-12 text-neutral-600" /><p className="mt-5 text-neutral-400">No 4-Man products found in this category yet.</p></div>}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{filtered.map((product) => <PreviewCard key={product.id} product={product} />)}</div>
       </section>
     </main>
   );
