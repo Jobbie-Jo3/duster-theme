@@ -30,10 +30,7 @@ export default function HomePage() {
     localStorage.setItem(STORAGE_KEY, id);
     setSelected(id);
 
-    if (id === "6man") {
-      router.push("/shop");
     }
-  }
 
   function switchCluster() {
     localStorage.removeItem(STORAGE_KEY);
@@ -45,12 +42,32 @@ export default function HomePage() {
   }
 
   if (selected === "6man") {
-    return (
-      <main className="min-h-screen flex items-center justify-center">
-        <p className="text-neutral-400">Opening your 6-Man shop...</p>
-      </main>
-    );
-  }
+  return (
+    <main className="min-h-screen flex flex-col items-center justify-center gap-6 px-6">
+      <h1 className="text-3xl font-bold text-white">
+        6-Man Cluster Selected
+      </h1>
+
+      <p className="text-neutral-400">
+        Your selected cluster is the original #SALT 6-Man shop.
+      </p>
+
+      <button
+        onClick={() => router.push("/shop")}
+        className="salt-button"
+      >
+        Enter 6-Man Shop
+      </button>
+
+      <button
+        onClick={switchCluster}
+        className="text-salt-orange-bright underline"
+      >
+        Switch Cluster
+      </button>
+    </main>
+  );
+}
 
   if (selected && selected !== "6man") {
     return (
