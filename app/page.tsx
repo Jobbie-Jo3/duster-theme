@@ -148,10 +148,6 @@ export default function HomePage() {
 }
 
 
-
-
-
-
 const isTwoMan = (name: string) => /\(\s*2\s*[- ]?\s*man\s*\)/i.test(name);
 
 export function TwoManPointsPreview({ onSwitch }: { onSwitch: () => void }) {
@@ -181,7 +177,7 @@ export function TwoManPointsPreview({ onSwitch }: { onSwitch: () => void }) {
           <div key={p.id} className="texture-plate rounded-md border border-steel bg-charcoal p-6">
             <p className="text-xs font-bold uppercase tracking-wider text-salt-orange-bright">2-Man Points</p>
             <h2 className="mt-3 text-xl font-bold text-white">{p.name}</h2>
-            <p className="mt-5 text-2xl font-bold text-white">£{p.price.toFixed(2)}</p>
+            <p className="mt-5 text-2xl font-bold text-white">£{Number(p.price).toFixed(2)}</p>
             <p className="mt-2 text-xs text-neutral-400">Product ID: {p.id} · {p.status ? "Enabled" : "Disabled in Tip4Serv"}</p>
             <div className="mt-6 rounded-md border border-steel p-3 text-center text-sm font-bold uppercase text-neutral-400">Preview Only — Cannot Purchase</div>
           </div>
