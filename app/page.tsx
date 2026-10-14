@@ -1,155 +1,126 @@
-import { ArrowRight, ShieldCheck } from 'lucide-react';
-import Link from 'next/link';
 
-import { getStoreWhoami } from '@/lib/api-client';
-import { ProductsGrid } from '@/components/home/products-grid';
+"use client";
 
-async function HomePage() {
-  const store = await getStoreWhoami();
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { ArrowRight, Users } from "lucide-react";
+
+const STORAGE_KEY = "salt-selected-cluster-v1";
+
+const clusters = [
+  { id: "2man", name: "2-MAN", subtitle: "Duos Cluster", active: false },
+  { id: "4man", name: "4-MAN", subtitle: "Four Player Cluster", active: false },
+  { id: "6man", name: "6-MAN", subtitle: "Original #SALT Cluster", active: true },
+];
+
+export default function HomePage() {
+  const router = useRouter();
+  const [selected, setSelected] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved && clusters.some((c) => c.id === saved)) {
+      setSelected(saved);
+    }
+    setLoaded(true);
+  }, []);
+
+  function chooseCluster(id: string) {
+    localStorage.setItem(STORAGE_KEY, id);
+    setSelected(id);
+
+    if (id === "6man") {
+      router.push("/shop");
+    }
+  }
+
+  function switchCluster() {
+    localStorage.removeItem(STORAGE_KEY);
+    setSelected(null);
+  }
+
+  if (!loaded) {
+    return <main className="min-h-screen" />;
+  }
+
+  if (selected === "6man") {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <p className="text-neutral-400">Opening your 6-Man shop...</p>
+      </main>
+    );
+  }
+
+  if (selected && selected !== "6man") {
+    return (
+      <main className="min-h-screen px-6 py-24 text-center">
+        <p className="text-salt-orange-bright font-bold">#SALT WEBSHOP</p>
+        <h1 className="mt-4 text-5xl font-black text-white">
+          {selected === "2man" ? "2-MAN" : "4-MAN"} SHOP
+        </h1>
+        <p className="mt-6 text-neutral-400">
+          This cluster's products and checkout are being configured.
+          Purchases are not available yet.
+        </p>
+        <button onClick={switchCluster} className="salt-button mt-10">
+          Switch Cluster
+        </button>
+      </main>
+    );
+  }
 
   return (
-    <div className="min-h-screen">
+    <main className="min-h-screen px-6 py-20">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-14 text-center">
+          <p className="font-display text-sm font-bold uppercase tracking-widest text-salt-orange-bright">
+            #SALT NO-WIPE
+          </p>
 
-      {/* HERO */}
-
-      <section className="texture-plate relative overflow-hidden border-b border-steel/60">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-40 left-1/4 h-96 w-96 rounded-full bg-salt-orange/10 blur-[120px]" />
-          <div className="absolute -bottom-32 right-1/4 h-96 w-96 rounded-full bg-salt-orange/5 blur-[120px]" />
-        </div>
-
-        <div className="relative mx-auto max-w-[1600px] px-6 py-24 text-center sm:py-32">
-
-          <div className="mb-6 inline-flex items-center rounded-md border border-salt-orange/40 bg-salt-orange/5 px-4 py-2 font-display text-xs font-bold uppercase tracking-wider text-salt-orange-bright">
-            Official #SALT Webshop
-          </div>
-
-          <h1 className="font-display text-5xl font-extrabold uppercase leading-[1.05] tracking-tight text-white sm:text-7xl lg:text-8xl">
-            <span className="text-salt-orange-bright glow-text">
-              #SALT
-            </span>{' '}
-            WEBSHOP
+          <h1 className="mt-4 font-display text-4xl font-black uppercase text-white sm:text-6xl">
+            Choose Your Cluster
           </h1>
 
-          <p className="mt-4 font-display text-xl font-bold uppercase tracking-[0.2em] text-neutral-300 sm:text-2xl">
-            ARK: Survival Ascended
+          <p className="mt-5 text-neutral-400">
+            Select the ARK: Survival Ascended cluster you want to shop for.
+            Your choice will be remembered.
           </p>
+        </div>
 
-          <p className="mt-3 text-sm font-semibold uppercase tracking-[0.3em] text-salt-orange-bright/80 sm:text-base">
-            VIP &bull; POINTS &bull; LOOT BOXES &bull; SERVER EXTRAS
-          </p>
-
-          {store?.description ? (
+        <div className="grid gap-6 md:grid-cols-3">
+          {clusters.map((cluster) => (
             <div
-              className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-neutral-400"
-              dangerouslySetInnerHTML={{
-                __html: store.description,
-              }}
-            />
-          ) : null}
-
-          <div className="mt-10 flex flex-wrap justify-center gap-3">
-
-            <Link
-              href="/shop"
-              className="salt-button"
+              key={cluster.id}
+              className="flex flex-col rounded-lg border border-steel bg-charcoal p-8"
             >
-              Browse Shop
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+              <Users className="mb-7 h-10 w-10 text-salt-orange-bright" />
 
-            <a
-              href="https://salt-webshop.vercel.app"
-              className="salt-button-outline"
-            >
-              View Webshop
-            </a>
+              <h2 className="font-display text-4xl font-black text-white">
+                {cluster.name}
+              </h2>
 
-          </div>
+              <p className="mt-3 flex-1 text-neutral-400">
+                {cluster.subtitle}
+              </p>
 
-          <div className="mt-9 flex flex-wrap justify-center gap-x-8 gap-y-3">
-
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-neutral-500">
-              <ShieldCheck className="h-4 w-4 text-salt-orange-bright" />
-              Official Store
-            </div>
-
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-neutral-500">
-              <ShieldCheck className="h-4 w-4 text-salt-orange-bright" />
-              Secure Checkout
-            </div>
-
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-neutral-500">
-              <ShieldCheck className="h-4 w-4 text-salt-orange-bright" />
-              Tip4Serv Delivery
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* PRODUCTS */}
-
-      <section className="mx-auto max-w-[1600px] px-6 py-20">
-
-        <div className="mb-10">
-
-          <p className="font-display text-xs font-bold uppercase tracking-[0.25em] text-salt-orange-bright">
-            #SALT Webshop
-          </p>
-
-          <h2 className="mt-2 font-display text-3xl font-bold uppercase tracking-tight text-white sm:text-4xl">
-            Browse Products
-          </h2>
-
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-neutral-400">
-            Browse VIP, points, loot boxes and other #SALT server extras.
-          </p>
-
-        </div>
-
-        <ProductsGrid />
-
-      </section>
-
-      {/* CTA */}
-
-      <section className="border-t border-steel/60 bg-charcoal-light/40 py-20">
-
-        <div className="mx-auto max-w-[1600px] px-6">
-
-          <div className="texture-plate rounded-md border border-steel/70 bg-charcoal p-8 text-center sm:p-12">
-
-            <p className="font-display text-xs font-bold uppercase tracking-[0.25em] text-salt-orange-bright">
-              Support #SALT
-            </p>
-
-            <h2 className="mt-3 font-display text-3xl font-bold uppercase text-white sm:text-4xl">
-              Ready To Drop In?
-            </h2>
-
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-neutral-400">
-              Browse the full #SALT webshop and support the cluster while picking up VIP, points and server extras.
-            </p>
-
-            <div className="mt-7">
-              <Link
-                href="/shop"
-                className="salt-button"
+              <button
+                onClick={() => chooseCluster(cluster.id)}
+                className="salt-button mt-8 flex items-center justify-center gap-2"
               >
-                View Full Shop
+                {cluster.active ? "Enter Shop" : "View Cluster"}
                 <ArrowRight className="h-4 w-4" />
-              </Link>
+              </button>
+
+              {!cluster.active && (
+                <p className="mt-4 text-center text-xs text-neutral-500">
+                  Purchases currently disabled
+                </p>
+              )}
             </div>
-
-          </div>
-
+          ))}
         </div>
-
-      </section>
-
-    </div>
+      </div>
+    </main>
   );
 }
-
-export default HomePage;
