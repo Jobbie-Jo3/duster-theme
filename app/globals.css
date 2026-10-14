@@ -616,3 +616,15 @@ textarea:focus {
 @media (prefers-reduced-motion: reduce) {
   .salt-custom-tek-choice { transition: none; }
 }
+
+/* Keep custom Tek cluster artwork anchored to the bottom even after removing heading. */
+.salt-selector-bottom-layout.salt-selector-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: calc(100svh - 64px);
+}
+.salt-selector-bottom-layout .salt-custom-selector {
+  margin-top: auto;
+  flex-shrink: 0;
+}
