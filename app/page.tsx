@@ -91,7 +91,7 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen px-6 py-20 salt-cluster-background salt-bg-selector">
+    <main className="min-h-screen px-6 py-20 salt-cluster-background salt-bg-selector salt-selector-screen">
       <div className="mx-auto max-w-6xl">
         <div className="mb-14 text-center">
           <p className="font-display text-sm font-bold uppercase tracking-widest text-salt-orange-bright">

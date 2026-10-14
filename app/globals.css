@@ -379,7 +379,7 @@ textarea:focus {
 .salt-bg-2man { --salt-shop-background: url('/salt-2man-shop-bg.webp'); }
 .salt-bg-4man { --salt-shop-background: url('/salt-4man-shop-bg.webp'); }
 .salt-bg-6man { --salt-shop-background: url('/salt-6man-shop-bg.webp'); }
-.salt-bg-selector { --salt-shop-background: url('/salt-6man-shop-bg.webp'); }
+.salt-bg-selector { --salt-shop-background: url('/salt-cluster-selector.webp'); }
 @media (max-width: 640px) {
   .salt-cluster-background::before { background-position: center top; }
   .salt-cluster-background::after { background: rgba(7,6,6,.85); }
@@ -418,6 +418,23 @@ textarea:focus {
 }
 .salt-shop-redesign .salt-tek-product-art { background: radial-gradient(ellipse at center, #24201c, #090a0c 76%); }
 @media (max-width: 640px) {
-  .salt-shop-redesign .salt-shop-hero { min-height: 235px; background-position: center, center, 48% 20%; }
+  .salt-shop-redesign .salt-shop-hero { height: 185px; min-height: 0; background-size: cover, cover, auto 100%; background-position: center, center, center center; }
   .salt-shop-redesign .salt-tek-product-card { border-radius: 5px; }
+}
+
+/* Cluster selection: separate artwork, shown only as a bounded top banner. */
+.salt-selector-screen { background: #090909; }
+.salt-selector-screen.salt-cluster-background::before {
+  position: absolute; inset: 0 0 auto; height: clamp(220px, 27vw, 390px);
+  background-size: cover; background-position: center 55%;
+}
+.salt-selector-screen.salt-cluster-background::after {
+  position: absolute; inset: 0 0 auto; height: clamp(220px, 27vw, 390px);
+  background: linear-gradient(180deg, rgba(5,5,5,.48), rgba(5,5,5,.67) 65%, #090909);
+}
+.salt-selector-screen > div { position: relative; z-index: 1; }
+@media (max-width: 640px) {
+  .salt-selector-screen.salt-cluster-background::before,
+  .salt-selector-screen.salt-cluster-background::after { height: 250px; }
+  .salt-selector-screen.salt-cluster-background::before { background-position: center top; }
 }
