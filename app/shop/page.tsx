@@ -292,6 +292,8 @@ export default function ShopPage() {
 
   const filteredProducts =
     allProducts.filter((product) => {
+      // Keep other clusters out of the original 6-Man catalogue.
+      if (/\(\s*(?:2|4)\s*[- ]?\s*man\s*\)/i.test(product.name)) return false;
       const query =
         searchQuery.toLowerCase();
 
