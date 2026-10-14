@@ -91,11 +91,6 @@ export default function HomePage() {
 
   return (
     <main className="salt-cluster-background salt-bg-selector salt-selector-screen salt-selector-bottom-layout">
-      <div className="salt-selector-top-label">
-        <span>#SALT NO-WIPE</span>
-        <h1>CHOOSE YOUR CLUSTER</h1>
-      </div>
-
       <section className="salt-custom-selector" aria-label="Choose your #SALT cluster">
         <div className="salt-custom-selector-inner">
           {clusters.map((cluster) => (
