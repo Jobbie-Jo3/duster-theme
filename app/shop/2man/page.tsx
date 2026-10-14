@@ -29,9 +29,9 @@ function productGroup(product: ProductGeneral): Exclude<Tab, "all"> {
 
 function PreviewCard({ product }: { product: ProductGeneral }) {
   return (
-    <article className="texture-plate flex h-full flex-col overflow-hidden rounded-md border border-steel bg-charcoal">
+    <article className="salt-tek-product-card texture-plate flex h-full flex-col overflow-hidden rounded-md border border-steel bg-charcoal">
       <div className="h-[2px] bg-salt-orange/70" />
-      <div className="relative h-52 overflow-hidden border-b border-steel/60 bg-void">
+      <div className="salt-tek-product-art relative h-44 overflow-hidden border-b border-steel/60 bg-void">
         <div className="absolute inset-0 texture-plate opacity-50" />
         {product.image ? (
           <Image src={product.image} alt={product.name} fill unoptimized className="object-contain p-5" />
@@ -39,7 +39,7 @@ function PreviewCard({ product }: { product: ProductGeneral }) {
           <div className="relative flex h-full items-center justify-center"><Zap className="h-14 w-14 text-salt-orange/30" /></div>
         )}
       </div>
-      <div className="flex flex-1 flex-col p-5">
+      <div className="flex flex-1 flex-col p-4 sm:p-5">
         <p className="font-display text-[9px] font-bold uppercase tracking-[0.22em] text-salt-orange-bright">#SALT 2-Man</p>
         <h3 className="mt-2 min-h-[46px] font-display text-lg font-bold uppercase leading-tight text-white">{cleanName(product.name)}</h3>
         <div className="mt-3 min-h-[42px] text-sm text-neutral-500">{product.small_description?.replace(/<[^>]*>/g, "").slice(0, 140) || "For the #SALT Duos cluster"}</div>
@@ -65,9 +65,9 @@ export default function TwoManShopPage() {
     { id: "vip", label: "VIP" }, { id: "loot", label: "Loot Boxes" }, { id: "other", label: "Other" },
   ];
   return (
-    <main className="min-h-screen salt-cluster-background salt-bg-2man">
-      <section className="texture-plate relative overflow-hidden border-b border-steel/60">
-        <div className="relative mx-auto max-w-[1600px] px-6 py-16 sm:py-20">
+    <main className="min-h-screen salt-shop-redesign salt-bg-2man">
+      <section className="salt-shop-hero texture-plate relative overflow-hidden border-b border-steel/60">
+        <div className="relative mx-auto max-w-[1600px] px-6 py-10 sm:py-12">
           <p className="font-display text-xs font-bold uppercase tracking-[0.25em] text-salt-orange-bright">#SALT Webshop</p>
           <h1 className="mt-2 font-display text-4xl font-extrabold uppercase tracking-tight text-white sm:text-5xl">2-Man Shop</h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-neutral-400">Points, VIP and loot boxes for the #SALT Duos cluster.</p>
@@ -77,7 +77,7 @@ export default function TwoManShopPage() {
           </div>
         </div>
       </section>
-      <section className="mx-auto max-w-[1600px] px-6 py-12 sm:py-16">
+      <section className="salt-shop-catalog mx-auto max-w-[1600px] px-6 py-10 sm:py-12">
         <p className="font-display text-xs font-bold uppercase tracking-[0.22em] text-salt-orange-bright">Find Products</p>
         <h2 className="mt-1 font-display text-2xl font-bold uppercase text-white">Search Webshop</h2>
         <div className="relative mt-5 max-w-3xl">

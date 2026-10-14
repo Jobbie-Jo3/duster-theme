@@ -130,7 +130,7 @@ export function ProductCard({
 
   const CardContent = (
     <div
-      className={`texture-plate group relative flex h-full flex-col overflow-hidden rounded-md border bg-charcoal transition-all duration-200 ${
+      className={`salt-tek-product-card texture-plate group relative flex h-full flex-col overflow-hidden rounded-md border bg-charcoal transition-all duration-200 ${
         isOutOfStock
           ? 'cursor-not-allowed border-steel opacity-60 grayscale'
           : 'border-steel hover:border-salt-orange/50'

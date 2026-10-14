@@ -309,16 +309,16 @@ export default function ShopPage() {
     });
 
   return (
-    <div className="min-h-screen salt-cluster-background salt-bg-6man">
+    <div className="min-h-screen salt-shop-redesign salt-bg-6man">
 
       {/* PAGE HEADER */}
 
-      <section className="texture-plate relative overflow-hidden border-b border-steel/60">
+      <section className="salt-shop-hero texture-plate relative overflow-hidden border-b border-steel/60">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -top-40 left-1/4 h-80 w-80 rounded-full bg-salt-orange/10 blur-[120px]" />
         </div>
 
-        <div className="relative mx-auto max-w-[1600px] px-6 py-16 sm:py-20">
+        <div className="relative mx-auto max-w-[1600px] px-6 py-10 sm:py-12">
           <p className="font-display text-xs font-bold uppercase tracking-[0.25em] text-salt-orange-bright">
             #SALT Webshop
           </p>
@@ -337,7 +337,7 @@ export default function ShopPage() {
 
       {/* SHOP */}
 
-      <section className="mx-auto max-w-[1600px] px-6 py-12 sm:py-16">
+      <section className="salt-shop-catalog mx-auto max-w-[1600px] px-6 py-10 sm:py-12">
 
         {/* CATEGORY ERROR */}
 
