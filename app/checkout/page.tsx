@@ -17,6 +17,7 @@ import {
   useState,
   useEffect,
   useMemo,
+  useRef,
   Suspense,
 } from 'react';
 import {
@@ -60,6 +61,15 @@ function CheckoutContent() {
   const { data: store } = useStore();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const formRef = useRef<HTMLFormElement>(null);
+  const confirmedSubmitRef = useRef(false);
+  const [showClusterConfirmation, setShowClusterConfirmation] = useState(false);
+
+  // 2-Man and 4-Man remain preview-only. Never let an old or manually
+  // populated cart use the live 6-Man checkout for those products.
+  const hasNonSixManProducts = cart.items.some((item) =>
+    !/\(\s*6\s*[- ]?\s*man\s*\)\s*$/i.test(item.product.name)
+  );
 
   const productIds = useMemo(
     () => cart.items.map((item) => item.product.id),
@@ -315,6 +325,21 @@ function CheckoutContent() {
     e.preventDefault();
 
     setCheckoutError(null);
+
+    if (hasNonSixManProducts) {
+      confirmedSubmitRef.current = false;
+      setShowClusterConfirmation(false);
+      setCheckoutError('Your cart contains products that are not verified for 6-Man checkout. Remove them and choose the correct cluster before purchasing.');
+      return;
+    }
+
+    // Only the explicit confirmation action can advance the checkout.
+    if (!confirmedSubmitRef.current) {
+      setShowClusterConfirmation(true);
+      return;
+    }
+    confirmedSubmitRef.current = false;
+    setShowClusterConfirmation(false);
 
     if (!flagsLoaded) {
       setCheckoutError(
@@ -738,6 +763,7 @@ function CheckoutContent() {
           <div className="lg:col-span-2">
 
             <form
+              ref={formRef}
               onSubmit={handleSubmit}
               className="space-y-6"
             >
@@ -1024,7 +1050,7 @@ function CheckoutContent() {
 
               <button
                 type="submit"
-                disabled={isRedirecting}
+                disabled={isRedirecting || hasNonSixManProducts}
                 className="salt-button w-full py-4 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isRedirecting ? (
@@ -1141,6 +1167,39 @@ function CheckoutContent() {
         </div>
 
       </section>
+
+      {showClusterConfirmation && (
+        <div
+          role="presentation"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 px-4 py-8"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setShowClusterConfirmation(false);
+          }}
+        >
+          <div role="dialog" aria-modal="true" aria-labelledby="salt-cluster-confirm-title" className="texture-plate w-full max-w-lg rounded-md border border-salt-orange/60 bg-charcoal p-6 shadow-2xl sm:p-8">
+            <p className="font-display text-xs font-bold uppercase tracking-[0.2em] text-salt-orange-bright">#SALT Purchase Verification</p>
+            <h2 id="salt-cluster-confirm-title" className="mt-3 font-display text-2xl font-extrabold uppercase text-white">Confirm Your Cluster</h2>
+            <p className="mt-4 text-sm leading-relaxed text-neutral-300">
+              You are about to purchase items for <strong className="text-salt-orange-bright">#SALT 6-Man</strong>.
+              Please confirm this is the cluster you play on. Purchases are delivered to the selected cluster and do not automatically transfer between clusters.
+            </p>
+            <p className="mt-4 text-sm font-semibold text-white">Order total: £{cart.getTotal().toFixed(2)}</p>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <button type="button" className="salt-button flex-1 py-3" onClick={() => {
+                if (hasNonSixManProducts) return;
+                confirmedSubmitRef.current = true;
+                formRef.current?.requestSubmit();
+              }}>Confirm 6-Man &amp; Continue</button>
+              <button type="button" className="flex-1 rounded-md border border-steel-light px-4 py-3 font-display text-xs font-bold uppercase text-white hover:border-salt-orange" onClick={() => {
+                setShowClusterConfirmation(false);
+                localStorage.removeItem('salt-selected-cluster-v1');
+                router.push('/');
+              }}>Switch Cluster</button>
+            </div>
+            <button type="button" className="mt-4 w-full text-center text-xs text-neutral-400 hover:text-white" onClick={() => setShowClusterConfirmation(false)}>Cancel and review order</button>
+          </div>
+        </div>
+      )}
 
     </div>
   );

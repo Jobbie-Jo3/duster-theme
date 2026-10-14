@@ -104,13 +104,14 @@ export function Header({ initialStore }: HeaderProps) {
 
             <Link
               href="/"
+              onClick={() => localStorage.removeItem('salt-selected-cluster-v1')}
               className={`rounded-sm px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wider transition-colors ${
                 isActive('/')
                   ? 'text-salt-orange-bright'
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
-              Home
+              Switch Cluster
             </Link>
 
             <Link
@@ -212,14 +213,17 @@ export function Header({ initialStore }: HeaderProps) {
 
                 <Link
                   href="/"
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    localStorage.removeItem('salt-selected-cluster-v1');
+                    setMobileMenuOpen(false);
+                  }}
                   className={`block rounded-sm px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider ${
                     isActive('/')
                       ? 'bg-salt-orange/10 text-salt-orange-bright'
                       : 'text-neutral-400 hover:bg-charcoal hover:text-white'
                   }`}
                 >
-                  Home
+                  Switch Cluster
                 </Link>
 
                 <Link

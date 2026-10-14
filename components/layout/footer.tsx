@@ -68,9 +68,10 @@ export function Footer({ initialStore }: FooterProps) {
 
               <Link
                 href="/"
+                onClick={() => localStorage.removeItem('salt-selected-cluster-v1')}
                 className="text-xs font-bold uppercase tracking-wider text-neutral-500 transition-colors hover:text-salt-orange-bright"
               >
-                Home
+                Switch Cluster
               </Link>
 
               <Link
