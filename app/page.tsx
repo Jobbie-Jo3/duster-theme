@@ -30,8 +30,7 @@ export default function HomePage() {
   function chooseCluster(id: string) {
     localStorage.setItem(STORAGE_KEY, id);
     setSelected(id);
-
-    }
+  }
 
   function switchCluster() {
     localStorage.removeItem(STORAGE_KEY);
@@ -74,12 +73,12 @@ export default function HomePage() {
     return <TwoManPointsPreview onSwitch={switchCluster} />;
   }
 
-  if (selected && selected !== "6man") {
+  if (selected === "4man") {
     return (
       <main className="min-h-screen px-6 py-24 text-center">
         <p className="text-salt-orange-bright font-bold">#SALT WEBSHOP</p>
         <h1 className="mt-4 text-5xl font-black text-white">
-          {selected === "2man" ? "2-MAN" : "4-MAN"} SHOP
+          4-MAN SHOP
         </h1>
         <p className="mt-6 text-neutral-400">
           This cluster's products and checkout are being configured.
