@@ -3,7 +3,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight } from "lucide-react";
 
 const STORAGE_KEY = "salt-selected-cluster-v1";
 
@@ -97,26 +96,26 @@ export default function HomePage() {
         <h1>CHOOSE YOUR CLUSTER</h1>
       </div>
 
-      <section className="salt-selector-bottom-bar" aria-label="Choose your #SALT cluster">
-        <div className="salt-selector-bottom-inner">
+      <section className="salt-custom-selector" aria-label="Choose your #SALT cluster">
+        <div className="salt-custom-selector-inner">
           {clusters.map((cluster) => (
             <button
               key={cluster.id}
               type="button"
               onClick={() => chooseCluster(cluster.id)}
-              className="salt-selector-cluster-button"
+              className="salt-custom-tek-choice"
               aria-label={`Select ${cluster.name} cluster`}
+              title={`Select ${cluster.name} cluster`}
             >
-              <span className="salt-selector-cluster-copy">
-                <span className="salt-selector-cluster-name">{cluster.name}</span>
-                <span className="salt-selector-cluster-subtitle">{cluster.subtitle}</span>
-                <span className="salt-selector-cluster-status">
-                  {cluster.active ? "SHOP AVAILABLE" : "BROWSE ONLY · CHECKOUT DISABLED"}
-                </span>
-              </span>
-              <span className="salt-selector-cluster-action">
+              <img
+                src={`/salt-selector-tek-${cluster.id}.webp`}
+                alt=""
+                aria-hidden="true"
+                className="salt-custom-tek-art"
+                draggable={false}
+              />
+              <span className="salt-custom-tek-action">
                 {cluster.active ? "ENTER SHOP" : "VIEW CLUSTER"}
-                <ArrowRight size={17} aria-hidden="true" />
               </span>
             </button>
           ))}

@@ -572,3 +572,47 @@ textarea:focus {
   .salt-tek-product-card { transition: none !important; }
   .salt-tek-product-card:hover { transform: none !important; }
 }
+
+
+/* Custom #SALT selector artwork: the supplied transparent Tek consoles ARE the controls. */
+.salt-selector-bottom-layout { padding-bottom: 0; }
+.salt-custom-selector {
+  position: relative; z-index: 2; width: 100%;
+  padding: 8px clamp(8px, 2vw, 30px) 18px;
+  background: linear-gradient(0deg, rgba(0,0,0,.80), rgba(0,0,0,.30) 65%, transparent);
+}
+.salt-custom-selector-inner {
+  width: min(100%, 1650px); margin-inline: auto;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end; gap: clamp(4px, .8vw, 15px);
+}
+.salt-custom-tek-choice {
+  position: relative; display: block; width: 100%; aspect-ratio: 2048 / 768;
+  padding: 0; border: 0; outline-offset: 4px;
+  background: transparent; cursor: pointer; color: #fff;
+  transition: transform .2s ease, filter .2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.salt-custom-tek-art { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.salt-custom-tek-choice:hover, .salt-custom-tek-choice:focus-visible {
+  transform: translateY(-5px); filter: drop-shadow(0 0 14px rgba(250,73,0,.58));
+}
+.salt-custom-tek-choice:focus-visible { outline: 2px solid #ff842d; }
+.salt-custom-tek-action {
+  position: absolute; left: 36%; right: 13%; top: 65%; height: 15%;
+  display: flex; justify-content: center; align-items: center;
+  font-family: inherit; font-size: clamp(9px, 1.18vw, 18px);
+  line-height: 1; font-weight: 950; letter-spacing: .11em;
+  color: #ffe2c3; text-shadow: 0 1px 2px #000, 0 0 9px rgba(250,73,0,.9);
+  pointer-events: none; white-space: nowrap;
+}
+.salt-custom-tek-choice:hover .salt-custom-tek-action { color: white; text-shadow: 0 0 13px #fa4900; }
+@media (max-width: 680px) {
+  .salt-selector-bottom-layout { min-height: calc(100svh - 60px); }
+  .salt-custom-selector { padding: 8px 12px 18px; }
+  .salt-custom-selector-inner { grid-template-columns: 1fr; gap: 1px; max-width: 470px; }
+  .salt-custom-tek-action { font-size: clamp(12px, 3.2vw, 19px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .salt-custom-tek-choice { transition: none; }
+}
