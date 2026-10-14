@@ -65,7 +65,7 @@ export default function FourManShopPage() {
     { id: "vip", label: "VIP" }, { id: "loot", label: "Loot Boxes" }, { id: "other", label: "Other" },
   ];
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen salt-cluster-background salt-bg-4man">
       <section className="texture-plate relative overflow-hidden border-b border-steel/60">
         <div className="relative mx-auto max-w-[1600px] px-6 py-16 sm:py-20">
           <p className="font-display text-xs font-bold uppercase tracking-[0.25em] text-salt-orange-bright">#SALT Webshop</p>

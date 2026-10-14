@@ -42,7 +42,7 @@ export default function HomePage() {
 
   if (selected === "6man") {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center gap-6 px-6">
+    <main className="min-h-screen flex flex-col items-center justify-center gap-6 px-6 salt-cluster-background salt-bg-6man">
       <h1 className="text-3xl font-bold text-white">
         6-Man Cluster Selected
       </h1>
@@ -70,7 +70,7 @@ export default function HomePage() {
 
   if (selected === "2man") {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center gap-6 px-6 text-center">
+      <main className={`min-h-screen flex flex-col items-center justify-center gap-6 px-6 text-center salt-cluster-background salt-bg-${selected}`}>
         <h1 className="font-display text-4xl font-black uppercase text-white">2-Man Cluster Selected</h1>
         <p className="text-neutral-400">Browse the #SALT Duos catalogue. Purchasing remains disabled during testing.</p>
         <button onClick={() => router.push("/shop/2man")} className="salt-button">Enter 2-Man Shop</button>
@@ -81,7 +81,7 @@ export default function HomePage() {
 
   if (selected === "4man") {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center gap-6 px-6 text-center">
+      <main className={`min-h-screen flex flex-col items-center justify-center gap-6 px-6 text-center salt-cluster-background salt-bg-${selected}`}>
         <h1 className="font-display text-4xl font-black uppercase text-white">4-Man Cluster Selected</h1>
         <p className="text-neutral-400">Browse the #SALT 4-Man catalogue. Purchasing remains disabled during testing.</p>
         <button onClick={() => router.push("/shop/4man")} className="salt-button">Enter 4-Man Shop</button>
@@ -91,7 +91,7 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen px-6 py-20">
+    <main className="min-h-screen px-6 py-20 salt-cluster-background salt-bg-selector">
       <div className="mx-auto max-w-6xl">
         <div className="mb-14 text-center">
           <p className="font-display text-sm font-bold uppercase tracking-widest text-salt-orange-bright">

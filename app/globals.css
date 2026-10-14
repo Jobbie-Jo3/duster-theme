@@ -365,3 +365,22 @@ textarea:focus {
   margin-left: auto;
   margin-right: auto;
 }
+/* #SALT cluster artwork: fixed background behind shop UI; no changes to commerce logic. */
+.salt-cluster-background { position: relative; isolation: isolate; }
+.salt-cluster-background::before {
+  content: ""; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background-image: var(--salt-shop-background); background-size: cover;
+  background-position: center center; background-repeat: no-repeat;
+}
+.salt-cluster-background::after {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(7,6,6,.70) 0%, rgba(7,6,6,.82) 44%, rgba(7,6,6,.92) 100%);
+}
+.salt-bg-2man { --salt-shop-background: url('/salt-2man-shop-bg.webp'); }
+.salt-bg-4man { --salt-shop-background: url('/salt-4man-shop-bg.webp'); }
+.salt-bg-6man { --salt-shop-background: url('/salt-6man-shop-bg.webp'); }
+.salt-bg-selector { --salt-shop-background: url('/salt-6man-shop-bg.webp'); }
+@media (max-width: 640px) {
+  .salt-cluster-background::before { background-position: center top; }
+  .salt-cluster-background::after { background: rgba(7,6,6,.85); }
+}

@@ -309,7 +309,7 @@ export default function ShopPage() {
     });
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen salt-cluster-background salt-bg-6man">
 
       {/* PAGE HEADER */}
 
