@@ -20,9 +20,9 @@ const rajdhani = Rajdhani({
 });
 
 export const metadata: Metadata = {
-  title: "#SALT Webshop",
+  title: "#SALT | Official Store",
   description:
-    "Official #SALT NO-WIPE ARK: Survival Ascended webshop for VIP, points, loot boxes and server extras.",
+    "Official #SALT ARK: Survival Ascended store. VIP, points, loot and server extras.",
   icons: {
     icon: "/favicon.ico",
   },

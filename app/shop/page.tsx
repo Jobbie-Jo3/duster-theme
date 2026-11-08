@@ -326,9 +326,7 @@ export default function ShopPage() {
           </h1>
 
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-neutral-400">
-            Browse VIP, points, loot boxes and
-            server extras for the #SALT
-            NO-WIPE cluster.
+            Browse VIP, points, loot and server extras for your #SALT adventure.
           </p>
         </div>
       </section>

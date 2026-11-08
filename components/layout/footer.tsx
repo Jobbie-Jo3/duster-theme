@@ -45,7 +45,7 @@ export function Footer({ initialStore }: FooterProps) {
                 </p>
 
                 <h3 className="mt-1 font-black uppercase tracking-wide text-white">
-                  #SALT NO-WIPE
+                  SALT | SURVIVE. THRIVE.
                 </h3>
               </div>
             </div>
@@ -53,7 +53,7 @@ export function Footer({ initialStore }: FooterProps) {
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-500">
               {store?.description
                 ? stripHtml(store.description)
-                : 'Official #SALT NO-WIPE ARK: Survival Ascended webshop.'}
+                : 'Official #SALT ARK: Survival Ascended webshop.'}
             </p>
           </div>
 
@@ -196,7 +196,7 @@ export function Footer({ initialStore }: FooterProps) {
         <div className="mt-8 flex flex-col gap-3 border-t border-steel/60 pt-6 text-xs text-neutral-600 sm:flex-row sm:items-center sm:justify-between">
 
           <p>
-            © {currentYear} #SALT NO-WIPE. All rights reserved.
+            © {currentYear} SALT | SURVIVE. THRIVE.. All rights reserved.
           </p>
 
           <p>

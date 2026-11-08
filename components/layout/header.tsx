@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ShoppingBag } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
@@ -10,22 +10,6 @@ import { useEffect, useState } from 'react';
 import { useStore } from '@/hooks/use-api';
 import { useCart } from '@/hooks/use-cart';
 import type { Store } from '@/lib/schemas';
-
-const NAV_ART: Record<string, string> = {
-  discord: '/salt-nav/SALT_DISCORD.webp',
-  support: '/salt-nav/SALT_SUPPORT.webp',
-  'terms of service': '/salt-nav/SALT_TERMS_OF_SERVICE.webp',
-  terms: '/salt-nav/SALT_TERMS_OF_SERVICE.webp',
-  tos: '/salt-nav/SALT_TERMS_OF_SERVICE.webp',
-};
-
-function NavigationArtwork({ src, label, mobile = false }: { src: string; label: string; mobile?: boolean }) {
-  return (
-    <span className={`relative block shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:brightness-125 ${mobile ? 'w-[170px]' : 'w-[124px] xl:w-[145px]'}`}>
-      <Image src={src} alt={label} width={2132} height={800} className="h-auto w-full object-contain" unoptimized />
-    </span>
-  );
-}
 
 interface HeaderProps {
   initialStore?: Store | null;
@@ -108,38 +92,22 @@ export function Header({ initialStore }: HeaderProps) {
                 #SALT
               </span>
 
-              <span className="font-display text-lg font-black uppercase tracking-wide text-white">
-                NO-WIPE
+              <span className="font-display text-[10px] font-extrabold uppercase tracking-[.22em] text-white/45">
+                OFFICIAL STORE
               </span>
             </div>
           </Link>
 
-          {/* DESKTOP NAV — custom supplied #SALT artwork */}
-          <nav className="hidden items-center gap-0 xl:gap-1 lg:flex" aria-label="Main navigation">
-            <Link href="/" onClick={() => localStorage.removeItem('salt-selected-cluster-v1')} className="group rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-salt-orange" aria-label="Switch Cluster" aria-current={isActive('/') ? 'page' : undefined}>
-              <NavigationArtwork src="/salt-nav/SALT_SWITCH_CLUSTER.webp" label="Switch Cluster" />
-            </Link>
-            <Link href="/shop" className="group rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-salt-orange" aria-label="Shop" aria-current={isActive('/shop') ? 'page' : undefined}>
-              <NavigationArtwork src="/salt-nav/SALT_SHOP.webp" label="Shop" />
-            </Link>
-            {store?.menu_links?.map((menuLink, index) => {
-              const title = menuLink.title.trim();
-              const artwork = NAV_ART[title.toLowerCase()];
-              return (
-                <a key={index} href={menuLink.link.trim()} target="_blank" rel="noopener noreferrer" className="group rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-salt-orange" aria-label={title}>
-                  {artwork ? <NavigationArtwork src={artwork} label={title} /> : <span className="px-2 text-xs font-bold uppercase tracking-wide text-neutral-300 hover:text-salt-orange-bright">{title}</span>}
-                </a>
-              );
-            })}
-            <Link href="/cart" className="group relative rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-salt-orange" aria-label="Cart" aria-current={isActive('/cart') || isActive('/checkout') ? 'page' : undefined}>
-              <NavigationArtwork src="/salt-nav/SALT_CART.webp" label="Cart" />
-              <AnimatePresence>
-                {mounted && cartItemCount > 0 ? (
-                  <motion.span key={cartItemCount} initial={{ scale: 0 }} animate={{ scale: animateCart ? [1, 1.4, 1] : 1 }} exit={{ scale: 0 }} transition={{ duration: 0.3 }} className="absolute right-1 top-0 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-void bg-salt-orange px-1 text-[9px] font-black text-black">
-                    {cartItemCount}
-                  </motion.span>
-                ) : null}
-              </AnimatePresence>
+          {/* DESKTOP NAV */}
+          <nav className="hidden items-center gap-2 lg:flex" aria-label="Main navigation">
+            <Link href="/" className={`rounded-full px-5 py-3 text-[11px] font-extrabold uppercase tracking-[.16em] transition ${isActive('/') ? 'bg-white/[.08] text-white' : 'text-white/55 hover:bg-white/[.05] hover:text-white'}`} aria-current={isActive('/') ? 'page' : undefined}>Home</Link>
+            <Link href="/shop" className={`rounded-full px-5 py-3 text-[11px] font-extrabold uppercase tracking-[.16em] transition ${isActive('/shop') || isActive('/product') ? 'bg-[#FA4B00] text-black' : 'text-white/65 hover:bg-[#FA4B00]/10 hover:text-[#FA4B00]'}`} aria-current={isActive('/shop') ? 'page' : undefined}>Shop</Link>
+            {store?.menu_links?.map((menuLink, index) => (
+              <a key={index} href={menuLink.link.trim()} target="_blank" rel="noopener noreferrer" className="rounded-full px-4 py-3 text-[11px] font-extrabold uppercase tracking-[.13em] text-white/50 transition hover:text-[#FA4B00]">{menuLink.title}</a>
+            ))}
+            <Link href="/cart" className="relative ml-2 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[.04] text-white transition hover:border-[#FA4B00]/50 hover:text-[#FA4B00]" aria-label="Cart" aria-current={isActive('/cart') || isActive('/checkout') ? 'page' : undefined}>
+              <ShoppingBag className="h-4 w-4" />
+              {mounted && cartItemCount > 0 ? <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#FA4B00] px-1 text-[9px] font-black text-black">{cartItemCount}</span> : null}
             </Link>
           </nav>
 
@@ -180,20 +148,7 @@ export function Header({ initialStore }: HeaderProps) {
             >
               <div className="space-y-1 py-3">
 
-                <Link
-                  href="/"
-                  onClick={() => {
-                    localStorage.removeItem('salt-selected-cluster-v1');
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`block rounded-sm px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider ${
-                    isActive('/')
-                      ? 'bg-salt-orange/10 text-salt-orange-bright'
-                      : 'text-neutral-400 hover:bg-charcoal hover:text-white'
-                  }`}
-                >
-                  <span className="group inline-block"><NavigationArtwork src="/salt-nav/SALT_SWITCH_CLUSTER.webp" label="Switch Cluster" mobile /></span>
-                </Link>
+                <Link href="/" onClick={() => setMobileMenuOpen(false)} className={`block rounded-xl px-4 py-3 text-xs font-extrabold uppercase tracking-wider ${isActive('/') ? 'bg-white/[.08] text-white' : 'text-neutral-400 hover:bg-charcoal hover:text-white'}`}>Home</Link>
 
                 <Link
                   href="/shop"
@@ -204,7 +159,7 @@ export function Header({ initialStore }: HeaderProps) {
                       : 'text-neutral-400 hover:bg-charcoal hover:text-white'
                   }`}
                 >
-                  <span className="group inline-block"><NavigationArtwork src="/salt-nav/SALT_SHOP.webp" label="Shop" mobile /></span>
+                  Shop
                 </Link>
 
                 {store?.menu_links?.map((menuLink, index) => (
@@ -216,9 +171,7 @@ export function Header({ initialStore }: HeaderProps) {
                     onClick={() => setMobileMenuOpen(false)}
                     className="block rounded-sm px-3 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-neutral-400 hover:bg-charcoal hover:text-white"
                   >
-                    {NAV_ART[menuLink.title.trim().toLowerCase()] ? (
-                      <span className="group inline-block"><NavigationArtwork src={NAV_ART[menuLink.title.trim().toLowerCase()]} label={menuLink.title} mobile /></span>
-                    ) : menuLink.title}
+                    {menuLink.title}
                   </a>
                 ))}
 
@@ -232,7 +185,7 @@ export function Header({ initialStore }: HeaderProps) {
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <span className="group inline-block"><NavigationArtwork src="/salt-nav/SALT_CART.webp" label="Cart" mobile /></span>
+                    Cart
                   </div>
 
                   {mounted && cartItemCount > 0 ? (

@@ -4,11 +4,11 @@
   --background: #0a0908;
   --foreground: #ece6de;
 
-  --primary: #ff7a1a;
-  --primary-bright: #ff9333;
+  --primary: #FA4B00;
+  --primary-bright: #ff7540;
 
   --secondary: #ece6de;
-  --accent: #ff7a1a;
+  --accent: #FA4B00;
 
   --card: #141210;
   --card-light: #1c1916;
@@ -25,9 +25,9 @@
   --steel: #2a2521;
   --steel-light: #3a332c;
 
-  --salt-orange: #ff7a1a;
-  --salt-orange-bright: #ff9333;
-  --salt-orange-dim: #b8540f;
+  --salt-orange: #FA4B00;
+  --salt-orange-bright: #ff7540;
+  --salt-orange-dim: #b83800;
 }
 
 @theme inline {
@@ -77,12 +77,12 @@ body {
   background-image:
     radial-gradient(
       circle at 15% 0%,
-      rgba(255, 122, 26, 0.08),
+      rgba(250, 75, 0, 0.08),
       transparent 45%
     ),
     radial-gradient(
       circle at 85% 20%,
-      rgba(255, 122, 26, 0.05),
+      rgba(250, 75, 0, 0.05),
       transparent 40%
     );
 
@@ -136,22 +136,22 @@ code {
 ========================================================= */
 
 .glow-border {
-  border: 1px solid rgba(255, 122, 26, 0.25);
+  border: 1px solid rgba(250, 75, 0, 0.25);
 
   box-shadow:
-    0 0 0 1px rgba(255, 122, 26, 0.05),
-    0 8px 30px -12px rgba(255, 122, 26, 0.15);
+    0 0 0 1px rgba(250, 75, 0, 0.05),
+    0 8px 30px -12px rgba(250, 75, 0, 0.15);
 }
 
 .glow-text {
   text-shadow:
-    0 0 20px rgba(255, 122, 26, 0.35);
+    0 0 20px rgba(250, 75, 0, 0.35);
 }
 
 .glow-primary {
   box-shadow:
-    0 0 0 1px rgba(255, 122, 26, 0.04),
-    0 8px 30px -12px rgba(255, 122, 26, 0.18);
+    0 0 0 1px rgba(250, 75, 0, 0.04),
+    0 8px 30px -12px rgba(250, 75, 0, 0.18);
 }
 
 /* =========================================================
@@ -191,7 +191,7 @@ code {
 }
 
 .salt-panel:hover {
-  border-color: rgba(255, 122, 26, 0.4);
+  border-color: rgba(250, 75, 0, 0.4);
 }
 
 /* =========================================================
@@ -234,7 +234,7 @@ code {
   transform: translateY(-1px);
 
   box-shadow:
-    0 0 18px rgba(255, 122, 26, 0.16);
+    0 0 18px rgba(250, 75, 0, 0.16);
 }
 
 .salt-button-outline {
@@ -243,7 +243,7 @@ code {
   justify-content: center;
   gap: 0.5rem;
 
-  border: 1px solid rgba(255, 122, 26, 0.4);
+  border: 1px solid rgba(250, 75, 0, 0.4);
   border-radius: 5px;
 
   background: #141210;
@@ -297,7 +297,7 @@ code {
 }
 
 .salt-button-ghost:hover {
-  border-color: rgba(255, 122, 26, 0.45);
+  border-color: rgba(250, 75, 0, 0.45);
   color: var(--color-salt-orange-bright);
 }
 
@@ -331,7 +331,7 @@ textarea:focus {
 ========================================================= */
 
 ::selection {
-  background: rgba(255, 122, 26, 0.35);
+  background: rgba(250, 75, 0, 0.35);
   color: #fff;
 }
 
@@ -365,3 +365,10 @@ textarea:focus {
   margin-left: auto;
   margin-right: auto;
 }
+/* SALT storefront refresh */
+::selection { background: #FA4B00; color: #080808; }
+.salt-hero { background: radial-gradient(ellipse at 75% 45%, rgba(250,75,0,.10), transparent 38%), linear-gradient(115deg,#090909 0%,#111 55%,#090909 100%); }
+.salt-hero-grid { position:absolute; inset:0; opacity:.2; background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px); background-size:64px 64px; mask-image:linear-gradient(to bottom,black,transparent 90%); }
+.salt-hero-glow { position:absolute; width:520px; height:520px; right:12%; top:8%; border-radius:50%; background:rgba(250,75,0,.08); filter:blur(120px); pointer-events:none; }
+.salt-hero-emblem { transform: perspective(1200px) rotateY(-5deg) rotateX(2deg); transition:transform .5s ease,border-color .5s ease; }
+.salt-hero-emblem:hover { transform:perspective(1200px) rotateY(0) rotateX(0) translateY(-5px); border-color:rgba(250,75,0,.4); }
